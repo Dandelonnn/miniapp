@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Снюсный Барон PRO</title>
+    <title>🌟 Снюсный Барон ULTRA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -13,7 +13,6 @@
             --tg-accent: #2b5278;
             --tg-button: #5288c1;
             --tg-star: #ffcc00;
-            --glow-color: rgba(255, 204, 0, 0.7);
         }
         
         body {
@@ -21,44 +20,90 @@
             background: var(--tg-theme-bg-color, var(--tg-bg));
             color: var(--tg-theme-text-color, var(--tg-text));
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 0;
             min-height: 100vh;
         }
         
-        .profile-card {
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
             background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
-            border-radius: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .profile-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0088cc, #00a2ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: none;
+            color: white;
+        }
+        
+        .profile-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background: var(--tg-theme-button-color, var(--tg-button));
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .nav-btn.active {
+            box-shadow: 0 0 0 2px white;
+        }
+        
+        .container {
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Стили для профиля */
+        .profile-container {
+            display: none;
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            border-radius: 15px;
             padding: 20px;
-            width: 100%;
-            max-width: 400px;
             margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s;
         }
         
-        .profile-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .profile-card.glow::after {
-            opacity: 0.3;
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
         
-        .avatar {
+        .profile-avatar {
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -66,73 +111,56 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
             font-size: 36px;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            margin-right: 15px;
             animation: pulse 2s infinite alternate;
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
-            100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 170, 255, 0.8); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
         
-        .username {
+        .profile-info h2 {
+            margin: 0;
             font-size: 20px;
+        }
+        
+        .profile-status {
+            color: #4CAF50;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-top: 5px;
         }
         
-        .status {
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px currentColor;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
         }
         
-        .balance {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .star {
-            color: var(--tg-star);
-            margin-right: 10px;
-            font-size: 28px;
-            filter: drop-shadow(0 0 5px var(--tg-star));
-            animation: twinkle 1.5s infinite alternate;
-        }
-        
-        @keyframes twinkle {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin: 15px 0;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
+        .stat-card {
             background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
             transition: transform 0.3s;
         }
         
-        .stat-item:hover {
-            transform: scale(1.05);
+        .stat-card:hover {
+            transform: scale(1.03);
         }
         
         .stat-value {
+            font-size: 24px;
             font-weight: bold;
-            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .star-icon {
+            color: var(--tg-star);
+            margin-right: 5px;
         }
         
         .stat-label {
@@ -140,9 +168,23 @@
             opacity: 0.7;
         }
         
-        .snus-shop {
-            width: 100%;
-            max-width: 400px;
+        /* Стили для магазина снюса */
+        .shop-container {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin: 20px 0;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
         }
         
         .snus-item {
@@ -152,31 +194,14 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
         }
         
         .snus-item:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .snus-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .snus-item:hover::before {
-            opacity: 1;
         }
         
         .snus-image {
@@ -187,30 +212,13 @@
             background-position: center;
             margin-right: 15px;
             flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .snus-image::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0) 55%
-            );
-            transform: rotate(30deg);
             animation: shine 3s infinite;
         }
         
         @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
+            0% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+            50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+            100% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
         }
         
         .snus-info {
@@ -226,7 +234,6 @@
             font-size: 14px;
             color: #4CAF50;
             margin-bottom: 5px;
-            text-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
         
         .snus-owned {
@@ -244,58 +251,100 @@
             transition: all 0.3s;
             font-weight: bold;
             white-space: nowrap;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
         }
         
         .buy-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 15px var(--glow-color);
         }
         
         .buy-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
-            box-shadow: none !important;
         }
         
-        .buy-button::after {
+        /* Стили для кейсов */
+        .cases-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .case-item {
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .case-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .case-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .case-image::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
-            transform: translateX(-100%);
-            transition: transform 0.5s;
-            z-index: -1;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        .buy-button:hover::after {
-            transform: translateX(100%);
+        .case-item:hover .case-image::after {
+            opacity: 0.3;
         }
         
-        .premium {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(45deg, #ff9500, #ffcc00);
-            color: #000;
-            font-size: 10px;
+        .case-name {
             font-weight: bold;
-            padding: 2px 5px;
-            border-radius: 5px;
-            animation: premium-glow 2s infinite alternate;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
         
-        @keyframes premium-glow {
-            0% { box-shadow: 0 0 5px #ffcc00; }
-            100% { box-shadow: 0 0 15px #ffcc00; }
+        .case-desc {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
         }
         
+        .artifacts-list {
+            text-align: left;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        
+        .open-case-btn {
+            background: linear-gradient(45deg, #ff9800, #ffcc00);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .open-case-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Анимации */
         @keyframes money-pop {
             0% { transform: scale(0.5) translateY(0); opacity: 0; }
             50% { transform: scale(1.2) translateY(-20px); opacity: 1; }
@@ -310,138 +359,201 @@
             animation: money-pop 1s forwards;
             pointer-events: none;
             z-index: 100;
-            text-shadow: 0 0 5px rgba(76, 175, 80, 0.8);
         }
         
-        .floating {
-            animation: floating 3s ease-in-out infinite;
+        @keyframes case-open {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
         }
         
-        @keyframes floating {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
+        .opening-case {
+            animation: case-open 1s ease-in-out;
         }
         
-        .confetti {
+        .artifact-popup {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            opacity: 0;
-            z-index: 99;
-            animation: confetti-fall 3s linear forwards;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 200;
+            text-align: center;
+            max-width: 80%;
+            animation: artifact-reveal 0.5s forwards;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
         
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        @keyframes artifact-reveal {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .artifact-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        
+        .artifact-name {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .artifact-desc {
+            margin-bottom: 15px;
+        }
+        
+        .close-popup {
+            background: var(--tg-theme-button-color, var(--tg-button));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 150;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="profile-card" id="profile-card">
-        <div class="avatar">👑</div>
-        <div class="username">Снюсный Барон</div>
-        <div class="status" id="status">Новичок</div>
-        
-        <div class="balance">
-            <span class="star">⭐️</span>
-            <span id="stars">1000</span>
+    <div class="header">
+        <button class="profile-btn" id="profile-btn">👤</button>
+        <div class="nav-buttons">
+            <button class="nav-btn active" id="shop-btn">Магазин</button>
+            <button class="nav-btn" id="cases-btn">Кейсы</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Профиль -->
+        <div class="profile-container" id="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">👑</div>
+                <div class="profile-info">
+                    <h2 id="profile-username">Снюсный Барон</h2>
+                    <div class="profile-status" id="profile-status">Новичок</div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value"><span class="star-icon">⭐️</span> <span id="profile-stars">1000</span></div>
+                    <div class="stat-label">Баланс</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><span id="profile-income">0</span>/мин</div>
+                    <div class="stat-label">Доход</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><span id="profile-snus">0</span></div>
+                    <div class="stat-label">Снюсов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><span id="profile-artifacts">0</span></div>
+                    <div class="stat-label">Артефактов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><span id="profile-earned">0</span></div>
+                    <div class="stat-label">Заработано</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><span id="profile-level">1</span></div>
+                    <div class="stat-label">Уровень</div>
+                </div>
+            </div>
         </div>
         
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-value" id="total-snus">0</div>
-                <div class="stat-label">Снюсов</div>
+        <!-- Магазин снюса -->
+        <div class="shop-container" id="shop-container">
+            <h2 class="section-title">🎁 Магазин снюса</h2>
+            
+            <div class="snus-item" id="snus-1">
+                <div class="snus-image" style="background-color: #f44336;"></div>
+                <div class="snus-info">
+                    <div class="snus-name">Siberia (Красная)</div>
+                    <div class="snus-income">Доход: 5 ⭐️/мин</div>
+                    <div class="snus-owned">Куплено: <span id="count-1">0</span></div>
+                </div>
+                <button class="buy-button" id="buy-1">50 ⭐️</button>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="income">0</div>
-                <div class="stat-label">⭐️/мин</div>
+            
+            <div class="snus-item" id="snus-2">
+                <div class="snus-image" style="background-color: #2196F3;"></div>
+                <div class="snus-info">
+                    <div class="snus-name">Odens (Синяя)</div>
+                    <div class="snus-income">Доход: 15 ⭐️/мин</div>
+                    <div class="snus-owned">Куплено: <span id="count-2">0</span></div>
+                </div>
+                <button class="buy-button" id="buy-2">150 ⭐️</button>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-earned">0</div>
-                <div class="stat-label">Заработано</div>
+            
+            <div class="snus-item" id="snus-3">
+                <div class="snus-image" style="background-color: #4CAF50;"></div>
+                <div class="snus-info">
+                    <div class="snus-name">Epok (Лимонная)</div>
+                    <div class="snus-income">Доход: 30 ⭐️/мин</div>
+                    <div class="snus-owned">Куплено: <span id="count-3">0</span></div>
+                </div>
+                <button class="buy-button" id="buy-3">300 ⭐️</button>
+            </div>
+        </div>
+        
+        <!-- Кейсы -->
+        <div class="cases-container" id="cases-container">
+            <h2 class="section-title">🎰 Кейсы с артефактами</h2>
+            
+            <div class="case-item">
+                <div class="case-image" style="background-color: #5e98d9;"></div>
+                <div class="case-name">Обычный кейс</div>
+                <div class="case-desc">Содержит обычные артефакты</div>
+                <div class="artifacts-list">
+                    • +5% к доходу (30 мин)<br>
+                    • +10% к доходу (15 мин)<br>
+                    • x2 доход (5 мин)
+                </div>
+                <button class="open-case-btn" data-case="common">Открыть за 200 ⭐️</button>
+            </div>
+            
+            <div class="case-item">
+                <div class="case-image" style="background-color: #8847ff;"></div>
+                <div class="case-name">Редкий кейс</div>
+                <div class="case-desc">Содержит редкие артефакты</div>
+                <div class="artifacts-list">
+                    • +15% к доходу (1 час)<br>
+                    • +25% к доходу (30 мин)<br>
+                    • x3 доход (10 мин)
+                </div>
+                <button class="open-case-btn" data-case="rare">Открыть за 500 ⭐️</button>
+            </div>
+            
+            <div class="case-item">
+                <div class="case-image" style="background-color: #eb4b4b;"></div>
+                <div class="case-name">Эпический кейс</div>
+                <div class="case-desc">Содержит мощные артефакты</div>
+                <div class="artifacts-list">
+                    • +50% к доходу (2 часа)<br>
+                    • x5 доход (15 мин)<br>
+                    • Перманентный +5% к доходу
+                </div>
+                <button class="open-case-btn" data-case="epic">Открыть за 1000 ⭐️</button>
             </div>
         </div>
     </div>
     
-    <div class="snus-shop">
-        <h2 class="floating">🎁 Магазин снюса</h2>
-        
-        <div class="snus-item" id="snus-1" style="border-left: 4px solid #f44336;">
-            <div class="snus-image" style="background-color: #f44336;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Siberia (Красная)</div>
-                <div class="snus-income">Доход: 5 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-1">0</span></div>
-            </div>
-            <button class="buy-button" id="buy-1">50 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-2" style="border-left: 4px solid #2196F3;">
-            <div class="snus-image" style="background-color: #2196F3;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Odens (Синяя)</div>
-                <div class="snus-income">Доход: 15 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-2">0</span></div>
-            </div>
-            <button class="buy-button" id="buy-2">150 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-3" style="border-left: 4px solid #4CAF50;">
-            <div class="snus-image" style="background-color: #4CAF50;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Epok (Лимонная)</div>
-                <div class="snus-income">Доход: 30 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-3">0</span></div>
-            </div>
-            <button class="buy-button" id="buy-3">300 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-4" style="border-left: 4px solid #9C27B0;">
-            <div class="snus-image" style="background-color: #9C27B0;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Thunder (Кофе)</div>
-                <div class="snus-income">Доход: 60 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-4">0</span></div>
-            </div>
-            <button class="buy-button" id="buy-4">600 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-5" style="border-left: 4px solid #FF9800;">
-            <div class="snus-image" style="background-color: #FF9800;"></div>
-            <div class="snus-info">
-                <div class="snus-name">G.4 (Апельсин)</div>
-                <div class="snus-income">Доход: 120 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-5">0</span></div>
-                <div class="premium">PREMIUM</div>
-            </div>
-            <button class="buy-button" id="buy-5">1200 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-6" style="border-left: 4px solid #E91E63;">
-            <div class="snus-image" style="background-color: #E91E63;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Lyft (Мята)</div>
-                <div class="snus-income">Доход: 250 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-6">0</span></div>
-                <div class="premium">PREMIUM</div>
-            </div>
-            <button class="buy-button" id="buy-6">2500 ⭐️</button>
-        </div>
-        
-        <div class="snus-item" id="snus-7" style="border-left: 4px solid #00BCD4;">
-            <div class="snus-image" style="background-color: #00BCD4;"></div>
-            <div class="snus-info">
-                <div class="snus-name">Killa (Арбуз)</div>
-                <div class="snus-income">Доход: 500 ⭐️/мин</div>
-                <div class="snus-owned">Куплено: <span id="count-7">0</span></div>
-                <div class="premium">VIP</div>
-            </div>
-            <button class="buy-button" id="buy-7">5000 ⭐️</button>
-        </div>
-    </div>
+    <div class="overlay" id="overlay"></div>
     
     <script>
         const tg = Telegram.WebApp;
@@ -451,35 +563,99 @@
         let stars = 1000;
         let totalEarned = 0;
         let totalIncome = 0;
+        let totalArtifacts = 0;
+        let level = 1;
         let incomeInterval = null;
+        let activeArtifacts = [];
         
         const snusBrands = [
-            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, color: "#f44336", owned: 0, premium: false },
-            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, color: "#2196F3", owned: 0, premium: false },
-            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, color: "#4CAF50", owned: 0, premium: false },
-            { id: 4, name: "Thunder (Кофе)", price: 600, income: 60, color: "#9C27B0", owned: 0, premium: false },
-            { id: 5, name: "G.4 (Апельсин)", price: 1200, income: 120, color: "#FF9800", owned: 0, premium: true },
-            { id: 6, name: "Lyft (Мята)", price: 2500, income: 250, color: "#E91E63", owned: 0, premium: true },
-            { id: 7, name: "Killa (Арбуз)", price: 5000, income: 500, color: "#00BCD4", owned: 0, premium: true }
+            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, color: "#f44336", owned: 0 },
+            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, color: "#2196F3", owned: 0 },
+            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, color: "#4CAF50", owned: 0 }
         ];
+        
+        const artifacts = {
+            common: [
+                { name: "Бонус новичка", icon: "🌟", desc: "+5% к доходу на 30 минут", effect: { multiplier: 1.05, duration: 1800000 } },
+                { name: "Удачная покупка", icon: "🍀", desc: "+10% к доходу на 15 минут", effect: { multiplier: 1.1, duration: 900000 } },
+                { name: "Золотой час", icon: "⏳", desc: "x2 доход на 5 минут", effect: { multiplier: 2, duration: 300000 } }
+            ],
+            rare: [
+                { name: "Серебряная подкова", icon: "🧲", desc: "+15% к доходу на 1 час", effect: { multiplier: 1.15, duration: 3600000 } },
+                { name: "Фарт", icon: "🎯", desc: "+25% к доходу на 30 минут", effect: { multiplier: 1.25, duration: 1800000 } },
+                { name: "Денежный дождь", icon: "🌧️", desc: "x3 доход на 10 минут", effect: { multiplier: 3, duration: 600000 } }
+            ],
+            epic: [
+                { name: "Золотая жила", icon: "💰", desc: "+50% к доходу на 2 часа", effect: { multiplier: 1.5, duration: 7200000 } },
+                { name: "Джекпот", icon: "🎰", desc: "x5 доход на 15 минут", effect: { multiplier: 5, duration: 900000 } },
+                { name: "Вечная удача", icon: "♾️", desc: "Перманентный +5% к доходу", effect: { multiplier: 1.05, permanent: true } }
+            ]
+        };
+        
+        // DOM элементы
+        const profileBtn = document.getElementById('profile-btn');
+        const profileContainer = document.getElementById('profile-container');
+        const shopBtn = document.getElementById('shop-btn');
+        const casesBtn = document.getElementById('cases-btn');
+        const shopContainer = document.getElementById('shop-container');
+        const casesContainer = document.getElementById('cases-container');
+        const overlay = document.getElementById('overlay');
         
         // Инициализация игры
         function initGame() {
             loadGame();
+            setupEventListeners();
             updateUI();
             startIncome();
+        }
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Кнопки навигации
+            profileBtn.addEventListener('click', toggleProfile);
+            shopBtn.addEventListener('click', () => switchTab('shop'));
+            casesBtn.addEventListener('click', () => switchTab('cases'));
             
-            // Назначение обработчиков кнопок
+            // Кнопки покупки снюса
             snusBrands.forEach(brand => {
                 document.getElementById(`buy-${brand.id}`).addEventListener('click', () => {
                     buySnus(brand.id);
                 });
             });
             
-            // Анимация свечения профиля
-            setInterval(() => {
-                document.getElementById('profile-card').classList.toggle('glow');
-            }, 3000);
+            // Кнопки открытия кейсов
+            document.querySelectorAll('.open-case-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const caseType = this.getAttribute('data-case');
+                    openCase(caseType);
+                });
+            });
+        }
+        
+        // Переключение вкладок
+        function switchTab(tab) {
+            shopContainer.style.display = 'none';
+            casesContainer.style.display = 'none';
+            shopBtn.classList.remove('active');
+            casesBtn.classList.remove('active');
+            
+            if (tab === 'shop') {
+                shopContainer.style.display = 'block';
+                shopBtn.classList.add('active');
+            } else if (tab === 'cases') {
+                casesContainer.style.display = 'block';
+                casesBtn.classList.add('active');
+            }
+        }
+        
+        // Показать/скрыть профиль
+        function toggleProfile() {
+            if (profileContainer.style.display === 'block') {
+                profileContainer.style.display = 'none';
+            } else {
+                profileContainer.style.display = 'block';
+                updateProfile();
+            }
         }
         
         // Покупка снюса
@@ -495,41 +671,114 @@
             brand.owned += 1;
             totalIncome += brand.income;
             
-            // Пересчет цены (каждая следующая покупка дороже)
-            brand.price = Math.floor(brand.price * (brand.premium ? 1.3 : 1.2));
+            // Пересчет цены
+            brand.price = Math.floor(brand.price * 1.2);
             
-            // Эффекты покупки
-            tg.HapticFeedback.impactOccurred('medium');
-            createConfetti(brand.color);
-            
-            // Анимация для премиум снюсов
-            if (brand.premium) {
-                const item = document.getElementById(`snus-${brand.id}`);
-                item.style.animation = 'none';
-                void item.offsetWidth; // Trigger reflow
-                item.style.animation = 'premium-glow 0.5s 3';
-            }
+            // Эффекты
+            tg.HapticFeedback.impactOccurred('light');
+            showMoneyPop(`-${brand.price}⭐️`, document.getElementById(`buy-${brandId}`));
             
             updateUI();
             saveGame();
         }
         
-        // Создание конфетти
-        function createConfetti(color) {
-            for (let i = 0; i < 30; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.backgroundColor = color;
-                confetti.style.left = `${Math.random() * 100}%`;
-                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
-                confetti.style.width = `${Math.random() * 10 + 5}px`;
-                confetti.style.height = `${Math.random() * 10 + 5}px`;
-                document.body.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 3000);
+        // Открытие кейса
+        function openCase(caseType) {
+            let casePrice;
+            switch(caseType) {
+                case 'common': casePrice = 200; break;
+                case 'rare': casePrice = 500; break;
+                case 'epic': casePrice = 1000; break;
+                default: return;
             }
+            
+            if (stars < casePrice) {
+                tg.showAlert("Недостаточно звёзд!");
+                return;
+            }
+            
+            stars -= casePrice;
+            totalArtifacts += 1;
+            
+            // Анимация открытия
+            const caseBtn = document.querySelector(`.open-case-btn[data-case="${caseType}"]`);
+            caseBtn.classList.add('opening-case');
+            setTimeout(() => {
+                caseBtn.classList.remove('opening-case');
+                
+                // Получение артефакта
+                const possibleArtifacts = artifacts[caseType];
+                const artifact = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+                applyArtifact(artifact);
+                
+                // Показ попапа
+                showArtifactPopup(artifact);
+            }, 1000);
+            
+            updateUI();
+            saveGame();
+        }
+        
+        // Применение артефакта
+        function applyArtifact(artifact) {
+            activeArtifacts.push({
+                ...artifact.effect,
+                endTime: artifact.effect.permanent ? null : Date.now() + artifact.effect.duration
+            });
+            
+            // Пересчет общего дохода с учетом артефактов
+            calculateTotalIncome();
+        }
+        
+        // Расчет общего дохода с учетом артефактов
+        function calculateTotalIncome() {
+            // Удаляем просроченные артефакты
+            activeArtifacts = activeArtifacts.filter(art => {
+                return art.permanent || (art.endTime && art.endTime > Date.now());
+            });
+            
+            // Базовый доход
+            let income = snusBrands.reduce((sum, brand) => sum + (brand.income * brand.owned), 0);
+            
+            // Применяем артефакты
+            let multiplier = 1;
+            activeArtifacts.forEach(art => {
+                multiplier *= art.multiplier;
+            });
+            
+            totalIncome = Math.floor(income * multiplier);
+        }
+        
+        // Показ попапа с артефактом
+        function showArtifactPopup(artifact) {
+            overlay.style.display = 'block';
+            
+            const popup = document.createElement('div');
+            popup.className = 'artifact-popup';
+            popup.innerHTML = `
+                <div class="artifact-icon">${artifact.icon}</div>
+                <div class="artifact-name">${artifact.name}</div>
+                <div class="artifact-desc">${artifact.desc}</div>
+                <button class="close-popup">OK</button>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            popup.querySelector('.close-popup').addEventListener('click', () => {
+                document.body.removeChild(popup);
+                overlay.style.display = 'none';
+            });
+        }
+        
+        // Показ анимации денег
+        function showMoneyPop(amount, element) {
+            const pop = document.createElement('div');
+            pop.className = 'money-pop';
+            pop.textContent = amount;
+            pop.style.left = `${element.offsetLeft + element.offsetWidth/2}px`;
+            pop.style.top = `${element.offsetTop}px`;
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 1000);
         }
         
         // Пассивный доход
@@ -537,19 +786,15 @@
             if (incomeInterval) clearInterval(incomeInterval);
             
             incomeInterval = setInterval(() => {
+                calculateTotalIncome();
+                
                 if (totalIncome > 0) {
                     const earned = Math.floor(totalIncome / 2); // Половина от дохода в минуту каждые 30 сек
                     stars += earned;
                     totalEarned += earned;
                     
-                    // Анимация получения дохода
-                    const pop = document.createElement('div');
-                    pop.className = 'money-pop';
-                    pop.textContent = `+${earned}⭐️`;
-                    pop.style.left = `${Math.random() * 60 + 20}%`;
-                    pop.style.top = '50%';
-                    document.body.appendChild(pop);
-                    setTimeout(() => pop.remove(), 1000);
+                    // Проверка уровня
+                    checkLevelUp();
                     
                     updateUI();
                     saveGame();
@@ -557,46 +802,75 @@
             }, 30000); // Каждые 30 секунд
         }
         
+        // Проверка повышения уровня
+        function checkLevelUp() {
+            const needed = level * 5000;
+            if (totalEarned >= needed) {
+                level += 1;
+                tg.HapticFeedback.impactOccurred('heavy');
+                
+                // Показ попапа с новым уровнем
+                const popup = document.createElement('div');
+                popup.className = 'artifact-popup';
+                popup.innerHTML = `
+                    <div class="artifact-icon">🎉</div>
+                    <div class="artifact-name">Новый уровень!</div>
+                    <div class="artifact-desc">Теперь вы ${getStatusName()} ${level} уровня</div>
+                    <button class="close-popup">OK</button>
+                `;
+                
+                overlay.style.display = 'block';
+                document.body.appendChild(popup);
+                
+                popup.querySelector('.close-popup').addEventListener('click', () => {
+                    document.body.removeChild(popup);
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+        
+        // Получение названия статуса
+        function getStatusName() {
+            if (totalIncome >= 1000) return "Король Снюса";
+            if (totalIncome >= 500) return "Мафиозный";
+            if (totalIncome >= 200) return "Опытный";
+            if (totalIncome >= 100) return "Начинающий";
+            if (totalIncome >= 50) return "Новичок";
+            return "Лузер";
+        }
+        
         // Обновление интерфейса
         function updateUI() {
             document.getElementById('stars').textContent = stars;
-            document.getElementById('income').textContent = totalIncome;
-            document.getElementById('total-earned').textContent = totalEarned;
-            
-            // Обновление статистики
-            const totalSnus = snusBrands.reduce((sum, brand) => sum + brand.owned, 0);
-            document.getElementById('total-snus').textContent = totalSnus;
-            
-            // Обновление статуса
-            const statusEl = document.getElementById('status');
-            if (totalIncome >= 1000) {
-                statusEl.textContent = "Король Снюса";
-                statusEl.style.color = "#ffeb3b";
-            } else if (totalIncome >= 500) {
-                statusEl.textContent = "Мафиозный";
-                statusEl.style.color = "#d32ce6";
-            } else if (totalIncome >= 200) {
-                statusEl.textContent = "Опытный";
-                statusEl.style.color = "#8847ff";
-            } else if (totalIncome >= 100) {
-                statusEl.textContent = "Начинающий";
-                statusEl.style.color = "#4b69ff";
-            } else if (totalIncome >= 50) {
-                statusEl.textContent = "Новичок";
-                statusEl.style.color = "#5e98d9";
-            } else {
-                statusEl.textContent = "Лузер";
-                statusEl.style.color = "#b0c3d9";
-            }
             
             // Обновление магазина
             snusBrands.forEach(brand => {
                 document.getElementById(`count-${brand.id}`).textContent = brand.owned;
                 document.getElementById(`buy-${brand.id}`).textContent = `${brand.price} ⭐️`;
-                
-                // Отключение кнопки если не хватает денег
                 document.getElementById(`buy-${brand.id}`).disabled = stars < brand.price;
             });
+        }
+        
+        // Обновление профиля
+        function updateProfile() {
+            document.getElementById('profile-stars').textContent = stars;
+            document.getElementById('profile-income').textContent = totalIncome;
+            document.getElementById('profile-snus').textContent = snusBrands.reduce((sum, brand) => sum + brand.owned, 0);
+            document.getElementById('profile-artifacts').textContent = totalArtifacts;
+            document.getElementById('profile-earned').textContent = totalEarned;
+            document.getElementById('profile-level').textContent = level;
+            
+            const status = getStatusName();
+            document.getElementById('profile-status').textContent = status;
+            
+            // Цвет статуса
+            const statusEl = document.getElementById('profile-status');
+            if (status.includes("Король")) statusEl.style.color = "#ffeb3b";
+            else if (status.includes("Мафиозный")) statusEl.style.color = "#d32ce6";
+            else if (status.includes("Опытный")) statusEl.style.color = "#8847ff";
+            else if (status.includes("Начинающий")) statusEl.style.color = "#4b69ff";
+            else if (status.includes("Новичок")) statusEl.style.color = "#5e98d9";
+            else statusEl.style.color = "#b0c3d9";
         }
         
         // Сохранение игры
@@ -605,7 +879,10 @@
                 stars,
                 totalEarned,
                 totalIncome,
-                snusBrands
+                totalArtifacts,
+                level,
+                snusBrands,
+                activeArtifacts
             };
             localStorage.setItem('snusBaronSave', JSON.stringify(gameData));
         }
@@ -618,6 +895,8 @@
                 stars = gameData.stars || 1000;
                 totalEarned = gameData.totalEarned || 0;
                 totalIncome = gameData.totalIncome || 0;
+                totalArtifacts = gameData.totalArtifacts || 0;
+                level = gameData.level || 1;
                 
                 if (gameData.snusBrands) {
                     gameData.snusBrands.forEach(savedBrand => {
@@ -628,10 +907,17 @@
                         }
                     });
                 }
+                
+                activeArtifacts = gameData.activeArtifacts || [];
+                
+                // Фильтрация просроченных артефактов
+                activeArtifacts = activeArtifacts.filter(art => {
+                    return art.permanent || (art.endTime && art.endTime > Date.now());
+                });
             }
         }
         
-        // Автосохранение каждые 30 секунд
+        // Автосохранение
         setInterval(saveGame, 30000);
         
         // Запуск игры
