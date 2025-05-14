@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 Бесплатные кейсы</title>
+    <title>🎮 CS:GO Style Case Opening</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --tg-bg: #17212b;
+            --tg-bg: #1a1a1a;
             --tg-text: #ffffff;
-            --tg-secondary: #232e3c;
-            --tg-accent: #2b5278;
-            --tg-button: #5288c1;
+            --tg-secondary: #2d2d2d;
+            --tg-accent: #3a3a3a;
+            --tg-button: #4CAF50;
         }
         
         body {
@@ -19,115 +19,291 @@
             background: var(--tg-theme-bg-color, var(--tg-bg));
             color: var(--tg-theme-text-color, var(--tg-text));
             margin: 0;
-            padding: 15px;
-        }
-        
-        .offer-container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .offer-card {
-            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            position: relative;
+            padding: 0;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
         
-        .offer-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #ff5555;
-            color: white;
+        .header {
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .balance {
+            display: inline-block;
+            background: #4CAF50;
             padding: 5px 15px;
-            border-bottom-left-radius: 15px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            margin-top: 10px;
         }
         
-        .offer-title {
+        .case-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .case {
+            width: 250px;
+            height: 180px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+        
+        .case-front, .case-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: linear-gradient(135deg, #ff9500, #ffcc00);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.5);
+            border: 3px solid #ffcc00;
+        }
+        
+        .case-back {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            transform: rotateY(180deg);
+            border: 3px solid #8BC34A;
+        }
+        
+        .items-container {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            bottom: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .item {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            margin: 0 10px;
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            border-radius: 10px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .item:hover {
+            transform: scale(1.1);
+        }
+        
+        .item-icon {
+            font-size: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .item-rarity {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+        
+        .rarity-common { color: #b0c3d9; }
+        .rarity-uncommon { color: #5e98d9; }
+        .rarity-rare { color: #4b69ff; }
+        .rarity-mythical { color: #8847ff; }
+        .rarity-legendary { color: #d32ce6; }
+        .rarity-ancient { color: #eb4b4b; }
+        
+        .open-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
             font-size: 18px;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--tg-theme-button-color, var(--tg-button));
-        }
-        
-        .offer-description {
-            margin-bottom: 15px;
-            opacity: 0.8;
-        }
-        
-        .offer-button {
-            background: var(--tg-theme-button-color, var(--tg-button));
-            color: var(--tg-theme-button-text-color, white);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            width: 100%;
-            font-weight: bold;
+            margin: 20px 0;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: background 0.3s;
         }
         
-        .offer-button:hover {
-            opacity: 0.9;
+        .open-button:hover {
+            background: #45a049;
         }
         
-        .free-label {
-            color: #4caf50;
-            font-weight: bold;
+        .open-button:disabled {
+            background: #666;
+            cursor: not-allowed;
         }
         
-        .section-title {
-            font-size: 20px;
-            margin: 25px 0 15px;
+        @keyframes spin {
+            0% { transform: rotateY(0); }
+            100% { transform: rotateY(360deg); }
+        }
+        
+        @keyframes item-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .spinning {
+            animation: spin 0.5s linear infinite;
+        }
+        
+        .won-item {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
+            animation: item-reveal 1s forwards;
+        }
+        
+        @keyframes item-reveal {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="offer-container">
-        <h2 class="section-title">🎁 Бесплатные кейсы</h2>
-        
-        <div class="offer-card">
-            <div class="offer-badge">ВНЕЗАПНО</div>
-            <div class="offer-title">Бесплатный кейс за промокод</div>
-            <div class="offer-description">Введите промокод и получите кейс в подарок</div>
-            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
+    <div class="header">
+        <h2>🎮 CS:GO Style Case Opening</h2>
+        <div class="balance">Баланс: <span id="balance">1000</span> ₽</div>
+    </div>
+    
+    <div class="case-container">
+        <div class="case" id="case">
+            <div class="case-front">CS:GO CASE</div>
+            <div class="case-back">OPEN ME!</div>
         </div>
-        
-        <div class="offer-card">
-            <div class="offer-badge">ВНЕЗАПНО</div>
-            <div class="offer-title">Бесплатный кейс за пополнение</div>
-            <div class="offer-description">Пополните баланс от 1000 ₽ и получите кейс</div>
-            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
-        </div>
-        
-        <div class="offer-card">
-            <div class="offer-badge">ВНЕЗАПНО</div>
-            <div class="offer-title">Ежедневный бесплатный кейс</div>
-            <div class="offer-description">Заходите каждый день за подарком</div>
-            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
-        </div>
+    </div>
+    
+    <button class="open-button" id="open-button">Открыть кейс (500 ₽)</button>
+    
+    <div class="items-container" id="items-container">
+        <!-- Items will be added by JavaScript -->
     </div>
     
     <script>
         const tg = Telegram.WebApp;
         tg.expand();
         
-        document.querySelectorAll('.offer-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const offerTitle = this.parentElement.querySelector('.offer-title').textContent;
-                tg.showAlert(`Вы выбрали: ${offerTitle}`);
-                
-                // Можно добавить логику обработки нажатия
-                // Например, открытие формы для промокода
-                // или переход к оплате
+        // Game data
+        let balance = 1000;
+        const casePrice = 500;
+        const items = [
+            { emoji: "🔫", name: "Glock-18", rarity: "common", price: 100 },
+            { emoji: "🔪", name: "Нож", rarity: "legendary", price: 2000 },
+            { emoji: "🛡️", name: "Броня", rarity: "uncommon", price: 200 },
+            { emoji: "🎯", name: "AWP", rarity: "rare", price: 500 },
+            { emoji: "💣", name: "Граната", rarity: "common", price: 50 },
+            { emoji: "🔫", name: "AK-47", rarity: "mythical", price: 800 },
+            { emoji: "🎩", name: "Шляпа", rarity: "uncommon", price: 150 },
+            { emoji: "👁️", name: "Древний артефакт", rarity: "ancient", price: 5000 }
+        ];
+        
+        // DOM elements
+        const caseEl = document.getElementById('case');
+        const openButton = document.getElementById('open-button');
+        const itemsContainer = document.getElementById('items-container');
+        const balanceEl = document.getElementById('balance');
+        
+        // Initialize items
+        function initItems() {
+            itemsContainer.innerHTML = '';
+            items.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'item';
+                itemEl.innerHTML = `
+                    <div class="item-icon">${item.emoji}</div>
+                    <div class="item-rarity rarity-${item.rarity}">${item.name}</div>
+                `;
+                itemsContainer.appendChild(itemEl);
             });
-        });
+        }
+        
+        // Open case function
+        function openCase() {
+            if (balance < casePrice) {
+                tg.showAlert("Недостаточно средств!");
+                return;
+            }
+            
+            balance -= casePrice;
+            balanceEl.textContent = balance;
+            openButton.disabled = true;
+            
+            // Start spinning animation
+            caseEl.style.transform = 'rotateY(720deg)';
+            
+            // Scroll items
+            itemsContainer.style.animation = 'item-scroll 5s linear forwards';
+            
+            setTimeout(() => {
+                // Stop on random item
+                const winnerIndex = Math.floor(Math.random() * items.length);
+                const winnerItem = items[winnerIndex];
+                
+                // Add winnings to balance
+                balance += winnerItem.price;
+                balanceEl.textContent = balance;
+                
+                // Show winner item
+                const wonItemEl = document.createElement('div');
+                wonItemEl.className = 'won-item';
+                wonItemEl.innerHTML = `
+                    <div style="font-size: 50px;">${winnerItem.emoji}</div>
+                    <h3>${winnerItem.name}</h3>
+                    <div class="rarity-${winnerItem.rarity}" style="font-weight: bold;">${winnerItem.rarity.toUpperCase()}</div>
+                    <p>+${winnerItem.price} ₽</p>
+                `;
+                document.body.appendChild(wonItemEl);
+                
+                // Reset animations
+                setTimeout(() => {
+                    caseEl.style.transform = 'rotateY(0)';
+                    itemsContainer.style.animation = 'none';
+                    wonItemEl.remove();
+                    openButton.disabled = false;
+                    initItems(); // Reset items
+                }, 3000);
+                
+            }, 5000);
+        }
+        
+        // Event listeners
+        openButton.addEventListener('click', openCase);
+        
+        // Initialize
+        initItems();
     </script>
 </body>
 </html>
