@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 Telegram Case Game</title>
+    <title>🎁 Бесплатные кейсы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -19,263 +19,115 @@
             background: var(--tg-theme-bg-color, var(--tg-bg));
             color: var(--tg-theme-text-color, var(--tg-text));
             margin: 0;
-            padding: 20px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        
-        .profile {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0088cc, #00a2ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .user-info {
-            flex-grow: 1;
-        }
-        
-        .balance {
-            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
-            padding: 10px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-        }
-        
-        .case-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 30px 0;
-        }
-        
-        .case {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ff9500, #ffcc00);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.3);
-            transition: transform 0.2s;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .case:hover {
-            transform: scale(1.03);
-        }
-        
-        .prize {
-            position: absolute;
-            font-size: 0;
-            opacity: 0;
-            transition: all 0.5s;
-            z-index: 1;
-        }
-        
-        .prize-icon {
-            font-size: 30px;
-        }
-        
-        .history {
-            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             padding: 15px;
+        }
+        
+        .offer-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .offer-card {
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             border-radius: 15px;
-            width: 100%;
-            max-width: 300px;
-            margin-top: 20px;
-            max-height: 150px;
-            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .history-item {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--tg-theme-hint-color, #5d6b7a);
+        .offer-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ff5555;
+            color: white;
+            padding: 5px 15px;
+            border-bottom-left-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
         }
         
-        button {
+        .offer-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--tg-theme-button-color, var(--tg-button));
+        }
+        
+        .offer-description {
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        
+        .offer-button {
             background: var(--tg-theme-button-color, var(--tg-button));
             color: var(--tg-theme-button-text-color, white);
             border: none;
-            padding: 12px 25px;
+            padding: 10px 15px;
             border-radius: 10px;
-            margin-top: 20px;
-            font-size: 16px;
+            width: 100%;
+            font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
         }
         
-        button:hover {
+        .offer-button:hover {
             opacity: 0.9;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(0.9); }
-            100% { transform: rotate(360deg) scale(1); }
+        .free-label {
+            color: #4caf50;
+            font-weight: bold;
         }
         
-        .spinning {
-            animation: spin 0.5s linear infinite;
+        .section-title {
+            font-size: 20px;
+            margin: 25px 0 15px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="profile">👤</div>
-        <div class="user-info">
-            <div>Игрок</div>
-            <div style="opacity: 0.7; font-size: 14px;">@username</div>
+    <div class="offer-container">
+        <h2 class="section-title">🎁 Бесплатные кейсы</h2>
+        
+        <div class="offer-card">
+            <div class="offer-badge">ВНЕЗАПНО</div>
+            <div class="offer-title">Бесплатный кейс за промокод</div>
+            <div class="offer-description">Введите промокод и получите кейс в подарок</div>
+            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
         </div>
-        <div class="balance">
-            <span style="margin-right: 5px;">⭐️</span>
-            <span id="stars">500</span>
+        
+        <div class="offer-card">
+            <div class="offer-badge">ВНЕЗАПНО</div>
+            <div class="offer-title">Бесплатный кейс за пополнение</div>
+            <div class="offer-description">Пополните баланс от 1000 ₽ и получите кейс</div>
+            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
+        </div>
+        
+        <div class="offer-card">
+            <div class="offer-badge">ВНЕЗАПНО</div>
+            <div class="offer-title">Ежедневный бесплатный кейс</div>
+            <div class="offer-description">Заходите каждый день за подарком</div>
+            <button class="offer-button">Получить <span class="free-label">БЕСПЛАТНО</span></button>
         </div>
     </div>
-    
-    <h2>🎁 Кейсы Telegram</h2>
-    <p>Крути кейс и выигрывай призы!</p>
-    
-    <div class="case-container">
-        <div class="case" id="case">Крутить<br>за 50 ⭐️</div>
-        <div class="prize" id="prize-template" style="display: none;">
-            <div class="prize-icon"></div>
-            <div class="prize-amount"></div>
-        </div>
-    </div>
-    
-    <div class="history">
-        <h3 style="margin-top: 0;">История</h3>
-        <div id="history"></div>
-    </div>
-    
-    <button id="close-btn">Закрыть</button>
     
     <script>
         const tg = Telegram.WebApp;
         tg.expand();
         
-        // Игровые данные
-        let stars = 500;
-        const history = [];
-        const prizes = [
-            { emoji: "💰", name: "Монетки", min: 10, max: 30 },
-            { emoji: "💎", name: "Кристаллы", min: 30, max: 60 },
-            { emoji: "🏆", name: "Трофей", min: 80, max: 150 },
-            { emoji: "🎁", name: "Подарок", min: 40, max: 80 },
-            { emoji: "🧧", name: "Бонус", min: 20, max: 50 }
-        ];
-        
-        // Элементы
-        const caseEl = document.getElementById('case');
-        const starsEl = document.getElementById('stars');
-        const historyEl = document.getElementById('history');
-        const closeBtn = document.getElementById('close-btn');
-        
-        // Крутим кейс
-        caseEl.addEventListener('click', () => {
-            if (stars < 50) {
-                addHistory("❌ Недостаточно звёзд");
-                return;
-            }
-            
-            stars -= 50;
-            updateStars();
-            caseEl.classList.add('spinning');
-            
-            setTimeout(() => {
-                caseEl.classList.remove('spinning');
-                openCase();
-            }, 2000);
+        document.querySelectorAll('.offer-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const offerTitle = this.parentElement.querySelector('.offer-title').textContent;
+                tg.showAlert(`Вы выбрали: ${offerTitle}`);
+                
+                // Можно добавить логику обработки нажатия
+                // Например, открытие формы для промокода
+                // или переход к оплате
+            });
         });
-        
-        // Открытие кейса
-        function openCase() {
-            const prize = prizes[Math.floor(Math.random() * prizes.length)];
-            const amount = Math.floor(Math.random() * (prize.max - prize.min + 1)) + prize.min;
-            stars += amount;
-            updateStars();
-            
-            // Создаем падающий приз
-            const prizeEl = document.getElementById('prize-template').cloneNode(true);
-            prizeEl.id = '';
-            prizeEl.style.display = 'block';
-            prizeEl.style.left = (Math.random() * 60 + 20) + '%';
-            prizeEl.style.top = '-50px';
-            prizeEl.querySelector('.prize-icon').textContent = prize.emoji;
-            prizeEl.querySelector('.prize-amount').textContent = '+' + amount;
-            
-            document.querySelector('.case-container').appendChild(prizeEl);
-            
-            setTimeout(() => {
-                prizeEl.style.opacity = '1';
-                prizeEl.style.fontSize = '16px';
-                prizeEl.style.top = (Math.random() * 100 + 100) + 'px';
-            }, 10);
-            
-            setTimeout(() => {
-                prizeEl.style.opacity = '0';
-                prizeEl.style.transform = 'translateY(50px)';
-                setTimeout(() => prizeEl.remove(), 1000);
-            }, 1500);
-            
-            addHistory(`${prize.emoji} ${prize.name}: +${amount} ⭐️`);
-        }
-        
-        // Обновление баланса
-        function updateStars() {
-            starsEl.textContent = stars;
-            // Можно сохранять в localStorage
-            // localStorage.setItem('stars', stars);
-        }
-        
-        // Добавление в историю
-        function addHistory(text) {
-            const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ':' + 
-                         now.getMinutes().toString().padStart(2, '0');
-            
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `<span style="opacity:0.7">${time}</span> ${text}`;
-            
-            historyEl.insertBefore(item, historyEl.firstChild);
-            if (historyEl.children.length > 10) {
-                historyEl.removeChild(historyEl.lastChild);
-            }
-        }
-        
-        // Закрыть приложение
-        closeBtn.addEventListener('click', () => {
-            tg.close();
-        });
-        
-        // Загрузка сохраненных данных
-        if (localStorage.getItem('stars')) {
-            stars = parseInt(localStorage.getItem('stars'));
-            updateStars();
-        }
     </script>
 </body>
 </html>
