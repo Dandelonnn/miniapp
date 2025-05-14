@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Снюсный Барон</title>
+    <title>🌟 Снюсный Барон PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -13,6 +13,7 @@
             --tg-accent: #2b5278;
             --tg-button: #5288c1;
             --tg-star: #ffcc00;
+            --glow-color: rgba(255, 204, 0, 0.7);
         }
         
         body {
@@ -35,6 +36,26 @@
             max-width: 400px;
             margin-bottom: 20px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        
+        .profile-card.glow::after {
+            opacity: 0.3;
         }
         
         .avatar {
@@ -47,6 +68,13 @@
             justify-content: center;
             margin: 0 auto 15px;
             font-size: 36px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
+            100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 170, 255, 0.8); }
         }
         
         .username {
@@ -56,9 +84,9 @@
         }
         
         .status {
-            color: #4CAF50;
             font-weight: bold;
             margin-bottom: 15px;
+            text-shadow: 0 0 10px currentColor;
         }
         
         .balance {
@@ -74,6 +102,13 @@
             color: var(--tg-star);
             margin-right: 10px;
             font-size: 28px;
+            filter: drop-shadow(0 0 5px var(--tg-star));
+            animation: twinkle 1.5s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
         
         .stats {
@@ -85,6 +120,14 @@
         
         .stat-item {
             text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: scale(1.05);
         }
         
         .stat-value {
@@ -109,6 +152,31 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .snus-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .snus-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .snus-item:hover::before {
+            opacity: 1;
         }
         
         .snus-image {
@@ -119,6 +187,30 @@
             background-position: center;
             margin-right: 15px;
             flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .snus-image::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 55%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
         }
         
         .snus-info {
@@ -134,6 +226,7 @@
             font-size: 14px;
             color: #4CAF50;
             margin-bottom: 5px;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
         
         .snus-owned {
@@ -148,23 +241,65 @@
             padding: 8px 15px;
             border-radius: 10px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.3s;
             font-weight: bold;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
         
         .buy-button:hover {
-            opacity: 0.9;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--glow-color);
         }
         
         .buy-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .buy-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+            z-index: -1;
+        }
+        
+        .buy-button:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .premium {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ff9500, #ffcc00);
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 5px;
+            animation: premium-glow 2s infinite alternate;
+        }
+        
+        @keyframes premium-glow {
+            0% { box-shadow: 0 0 5px #ffcc00; }
+            100% { box-shadow: 0 0 15px #ffcc00; }
         }
         
         @keyframes money-pop {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
+            0% { transform: scale(0.5) translateY(0); opacity: 0; }
+            50% { transform: scale(1.2) translateY(-20px); opacity: 1; }
+            100% { transform: scale(1) translateY(-40px); opacity: 0; }
         }
         
         .money-pop {
@@ -175,14 +310,40 @@
             animation: money-pop 1s forwards;
             pointer-events: none;
             z-index: 100;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.8);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 99;
+            animation: confetti-fall 3s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="profile-card">
+    <div class="profile-card" id="profile-card">
         <div class="avatar">👑</div>
         <div class="username">Снюсный Барон</div>
-        <div class="status">Начинающий</div>
+        <div class="status" id="status">Новичок</div>
         
         <div class="balance">
             <span class="star">⭐️</span>
@@ -206,9 +367,9 @@
     </div>
     
     <div class="snus-shop">
-        <h2>Магазин снюса</h2>
+        <h2 class="floating">🎁 Магазин снюса</h2>
         
-        <div class="snus-item" id="snus-1">
+        <div class="snus-item" id="snus-1" style="border-left: 4px solid #f44336;">
             <div class="snus-image" style="background-color: #f44336;"></div>
             <div class="snus-info">
                 <div class="snus-name">Siberia (Красная)</div>
@@ -218,7 +379,7 @@
             <button class="buy-button" id="buy-1">50 ⭐️</button>
         </div>
         
-        <div class="snus-item" id="snus-2">
+        <div class="snus-item" id="snus-2" style="border-left: 4px solid #2196F3;">
             <div class="snus-image" style="background-color: #2196F3;"></div>
             <div class="snus-info">
                 <div class="snus-name">Odens (Синяя)</div>
@@ -228,7 +389,7 @@
             <button class="buy-button" id="buy-2">150 ⭐️</button>
         </div>
         
-        <div class="snus-item" id="snus-3">
+        <div class="snus-item" id="snus-3" style="border-left: 4px solid #4CAF50;">
             <div class="snus-image" style="background-color: #4CAF50;"></div>
             <div class="snus-info">
                 <div class="snus-name">Epok (Лимонная)</div>
@@ -238,7 +399,7 @@
             <button class="buy-button" id="buy-3">300 ⭐️</button>
         </div>
         
-        <div class="snus-item" id="snus-4">
+        <div class="snus-item" id="snus-4" style="border-left: 4px solid #9C27B0;">
             <div class="snus-image" style="background-color: #9C27B0;"></div>
             <div class="snus-info">
                 <div class="snus-name">Thunder (Кофе)</div>
@@ -246,6 +407,39 @@
                 <div class="snus-owned">Куплено: <span id="count-4">0</span></div>
             </div>
             <button class="buy-button" id="buy-4">600 ⭐️</button>
+        </div>
+        
+        <div class="snus-item" id="snus-5" style="border-left: 4px solid #FF9800;">
+            <div class="snus-image" style="background-color: #FF9800;"></div>
+            <div class="snus-info">
+                <div class="snus-name">G.4 (Апельсин)</div>
+                <div class="snus-income">Доход: 120 ⭐️/мин</div>
+                <div class="snus-owned">Куплено: <span id="count-5">0</span></div>
+                <div class="premium">PREMIUM</div>
+            </div>
+            <button class="buy-button" id="buy-5">1200 ⭐️</button>
+        </div>
+        
+        <div class="snus-item" id="snus-6" style="border-left: 4px solid #E91E63;">
+            <div class="snus-image" style="background-color: #E91E63;"></div>
+            <div class="snus-info">
+                <div class="snus-name">Lyft (Мята)</div>
+                <div class="snus-income">Доход: 250 ⭐️/мин</div>
+                <div class="snus-owned">Куплено: <span id="count-6">0</span></div>
+                <div class="premium">PREMIUM</div>
+            </div>
+            <button class="buy-button" id="buy-6">2500 ⭐️</button>
+        </div>
+        
+        <div class="snus-item" id="snus-7" style="border-left: 4px solid #00BCD4;">
+            <div class="snus-image" style="background-color: #00BCD4;"></div>
+            <div class="snus-info">
+                <div class="snus-name">Killa (Арбуз)</div>
+                <div class="snus-income">Доход: 500 ⭐️/мин</div>
+                <div class="snus-owned">Куплено: <span id="count-7">0</span></div>
+                <div class="premium">VIP</div>
+            </div>
+            <button class="buy-button" id="buy-7">5000 ⭐️</button>
         </div>
     </div>
     
@@ -260,10 +454,13 @@
         let incomeInterval = null;
         
         const snusBrands = [
-            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, color: "#f44336", owned: 0 },
-            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, color: "#2196F3", owned: 0 },
-            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, color: "#4CAF50", owned: 0 },
-            { id: 4, name: "Thunder (Кофе)", price: 600, income: 60, color: "#9C27B0", owned: 0 }
+            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, color: "#f44336", owned: 0, premium: false },
+            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, color: "#2196F3", owned: 0, premium: false },
+            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, color: "#4CAF50", owned: 0, premium: false },
+            { id: 4, name: "Thunder (Кофе)", price: 600, income: 60, color: "#9C27B0", owned: 0, premium: false },
+            { id: 5, name: "G.4 (Апельсин)", price: 1200, income: 120, color: "#FF9800", owned: 0, premium: true },
+            { id: 6, name: "Lyft (Мята)", price: 2500, income: 250, color: "#E91E63", owned: 0, premium: true },
+            { id: 7, name: "Killa (Арбуз)", price: 5000, income: 500, color: "#00BCD4", owned: 0, premium: true }
         ];
         
         // Инициализация игры
@@ -278,6 +475,11 @@
                     buySnus(brand.id);
                 });
             });
+            
+            // Анимация свечения профиля
+            setInterval(() => {
+                document.getElementById('profile-card').classList.toggle('glow');
+            }, 3000);
         }
         
         // Покупка снюса
@@ -294,11 +496,40 @@
             totalIncome += brand.income;
             
             // Пересчет цены (каждая следующая покупка дороже)
-            brand.price = Math.floor(brand.price * 1.2);
+            brand.price = Math.floor(brand.price * (brand.premium ? 1.3 : 1.2));
             
-            tg.HapticFeedback.impactOccurred('light');
+            // Эффекты покупки
+            tg.HapticFeedback.impactOccurred('medium');
+            createConfetti(brand.color);
+            
+            // Анимация для премиум снюсов
+            if (brand.premium) {
+                const item = document.getElementById(`snus-${brand.id}`);
+                item.style.animation = 'none';
+                void item.offsetWidth; // Trigger reflow
+                item.style.animation = 'premium-glow 0.5s 3';
+            }
+            
             updateUI();
             saveGame();
+        }
+        
+        // Создание конфетти
+        function createConfetti(color) {
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = color;
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
         }
         
         // Пассивный доход
@@ -315,8 +546,8 @@
                     const pop = document.createElement('div');
                     pop.className = 'money-pop';
                     pop.textContent = `+${earned}⭐️`;
-                    pop.style.left = '50%';
-                    pop.style.top = '100px';
+                    pop.style.left = `${Math.random() * 60 + 20}%`;
+                    pop.style.top = '50%';
                     document.body.appendChild(pop);
                     setTimeout(() => pop.remove(), 1000);
                     
@@ -337,26 +568,34 @@
             document.getElementById('total-snus').textContent = totalSnus;
             
             // Обновление статуса
-            const statusEl = document.querySelector('.status');
-            if (totalIncome >= 200) {
+            const statusEl = document.getElementById('status');
+            if (totalIncome >= 1000) {
+                statusEl.textContent = "Король Снюса";
+                statusEl.style.color = "#ffeb3b";
+            } else if (totalIncome >= 500) {
                 statusEl.textContent = "Мафиозный";
                 statusEl.style.color = "#d32ce6";
-            } else if (totalIncome >= 100) {
+            } else if (totalIncome >= 200) {
                 statusEl.textContent = "Опытный";
                 statusEl.style.color = "#8847ff";
-            } else if (totalIncome >= 50) {
+            } else if (totalIncome >= 100) {
                 statusEl.textContent = "Начинающий";
                 statusEl.style.color = "#4b69ff";
-            } else {
+            } else if (totalIncome >= 50) {
                 statusEl.textContent = "Новичок";
                 statusEl.style.color = "#5e98d9";
+            } else {
+                statusEl.textContent = "Лузер";
+                statusEl.style.color = "#b0c3d9";
             }
             
             // Обновление магазина
             snusBrands.forEach(brand => {
                 document.getElementById(`count-${brand.id}`).textContent = brand.owned;
                 document.getElementById(`buy-${brand.id}`).textContent = `${brand.price} ⭐️`;
-                document.getElementById(`snus-${brand.id}`).style.borderLeft = `4px solid ${brand.color}`;
+                
+                // Отключение кнопки если не хватает денег
+                document.getElementById(`buy-${brand.id}`).disabled = stars < brand.price;
             });
         }
         
