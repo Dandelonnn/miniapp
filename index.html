@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+        }
+        button {
+            padding: 10px 15px;
+            background: var(--tg-theme-button-color, #0088cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Привет, Telegram!</h1>
+    <p>Этот Mini App работает на Vercel!</p>
+    
+    <button onclick="Telegram.WebApp.close()">Закрыть</button>
+    <button onclick="alert('Кнопка нажата!')">Alert</button>
+
+    <script>
+        const tg = Telegram.WebApp;
+        tg.expand(); // Раскрыть на весь экран
+        tg.MainButton.setText("Отправить").show().onClick(() => {
+            tg.sendData("Данные отправлены!");
+        });
+    </script>
+</body>
+</html>
