@@ -13,7 +13,6 @@
             --tg-accent: #2b5278;
             --tg-button: #5288c1;
             --tg-star: #ffcc00;
-            --tg-glow: #00ffcc;
         }
         
         body {
@@ -23,18 +22,16 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         
         .header {
             display: flex;
             justify-content: space-between;
             padding: 15px;
-            background: linear-gradient(90deg, var(--tg-secondary), var(--tg-accent));
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         .profile-btn {
@@ -47,21 +44,13 @@
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid #fff;
-            overflow: hidden;
-        }
-        
-        .profile-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+            transition: transform 0.3s;
+            border: none;
+            color: white;
         }
         
         .profile-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px var(--tg-glow);
         }
         
         .nav-buttons {
@@ -70,41 +59,21 @@
         }
         
         .nav-btn {
-            background: linear-gradient(45deg, var(--tg-button), #6ba8d6);
+            background: var(--tg-theme-button-color, var(--tg-button));
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 10px 15px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-weight: bold;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-btn::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.2);
-            transition: width 0.3s;
-        }
-        
-        .nav-btn:hover::after {
-            width: 100%;
+            transition: transform 0.3s;
         }
         
         .nav-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(82, 136, 193, 0.5);
         }
         
         .nav-btn.active {
-            box-shadow: 0 0 0 3px white, 0 0 10px var(--tg-glow);
+            box-shadow: 0 0 0 2px white;
         }
         
         .container {
@@ -113,14 +82,14 @@
             margin: 0 auto;
         }
         
+        /* Стили для профиля */
         .profile-container {
             display: none;
-            background: linear-gradient(135deg, var(--tg-secondary), #2e4053);
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
             animation: fadeIn 0.5s;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
         
         @keyframes fadeIn {
@@ -132,9 +101,6 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
         }
         
         .profile-avatar {
@@ -148,32 +114,22 @@
             font-size: 36px;
             margin-right: 15px;
             animation: pulse 2s infinite alternate;
-            box-shadow: 0 0 15px var(--tg-glow);
-        }
-        
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 10px var(--tg-glow); }
-            100% { transform: scale(1.05); box-shadow: 0 0 20px var(--tg-glow); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
         
         .profile-info h2 {
             margin: 0;
             font-size: 20px;
-            text-shadow: 0 0 5px var(--tg-glow);
         }
         
         .profile-status {
             color: #4CAF50;
             font-weight: bold;
             margin-top: 5px;
-            text-shadow: 0 0 3px #4CAF50;
         }
         
         .stats-grid {
@@ -187,13 +143,11 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             padding: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
         }
         
         .stat-card:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 15px var(--tg-glow);
         }
         
         .stat-value {
@@ -202,20 +156,19 @@
             margin-bottom: 5px;
             display: flex;
             align-items: center;
-            color: var(--tg-star);
-            text-shadow: 0 0 5px var(--tg-glow);
         }
         
         .star-icon {
+            color: var(--tg-star);
             margin-right: 5px;
         }
         
         .stat-label {
             font-size: 12px;
             opacity: 0.7;
-            text-transform: uppercase;
         }
         
+        /* Стили для магазина снюса */
         .shop-container {
             display: block;
             animation: fadeIn 0.5s;
@@ -226,8 +179,6 @@
             margin: 20px 0;
             text-align: center;
             animation: float 3s ease-in-out infinite;
-            text-shadow: 0 0 10px var(--tg-glow);
-            color: #fff;
         }
         
         @keyframes float {
@@ -237,7 +188,7 @@
         }
         
         .snus-item {
-            background: linear-gradient(135deg, var(--tg-secondary), #2e4053);
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 15px;
@@ -246,30 +197,27 @@
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .snus-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px var(--tg-glow);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .snus-image {
             width: 60px;
             height: 60px;
             border-radius: 10px;
-            background-size: contain;
+            background-size: cover;
             background-position: center;
             margin-right: 15px;
             flex-shrink: 0;
             animation: shine 3s infinite;
-            border: 2px solid #fff;
-            box-shadow: 0 0 10px var(--tg-glow);
         }
         
         @keyframes shine {
             0% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
-            50% { box-shadow: 0 0 20px var(--tg-glow); }
+            50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
             100% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
         }
         
@@ -280,14 +228,12 @@
         .snus-name {
             font-weight: bold;
             margin-bottom: 5px;
-            text-shadow: 0 0 3px var(--tg-glow);
         }
         
         .snus-income {
             font-size: 14px;
             color: #4CAF50;
             margin-bottom: 5px;
-            text-shadow: 0 0 2px #4CAF50;
         }
         
         .snus-owned {
@@ -296,38 +242,19 @@
         }
         
         .buy-button {
-            background: linear-gradient(45deg, #ff9800, #ffcc00);
-            color: black;
+            background: var(--tg-theme-button-color, var(--tg-button));
+            color: var(--tg-theme-button-text-color, white);
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 8px 15px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
-        }
-        
-        .buy-button::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.3);
-            transition: width 0.3s;
-        }
-        
-        .buy-button:hover::after {
-            width: 100%;
+            white-space: nowrap;
         }
         
         .buy-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--tg-glow);
         }
         
         .buy-button:disabled {
@@ -336,26 +263,25 @@
             transform: none !important;
         }
         
+        /* Стили для кейсов */
         .cases-container {
             display: none;
             animation: fadeIn 0.5s;
         }
         
         .case-item {
-            background: linear-gradient(135deg, var(--tg-secondary), #2e4053);
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .case-item:hover {
             transform: scale(1.02);
-            box-shadow: 0 5px 20px var(--tg-glow);
         }
         
         .case-image {
@@ -366,14 +292,6 @@
             background-repeat: no-repeat;
             background-position: center;
             position: relative;
-            animation: glowPulse 4s infinite;
-            border: 2px solid #fff;
-        }
-        
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 10px var(--tg-glow); }
-            50% { box-shadow: 0 0 20px var(--tg-glow); }
-            100% { box-shadow: 0 0 10px var(--tg-glow); }
         }
         
         .case-image::after {
@@ -397,7 +315,6 @@
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 10px;
-            text-shadow: 0 0 5px var(--tg-glow);
         }
         
         .case-desc {
@@ -416,138 +333,87 @@
             background: linear-gradient(45deg, #ff9800, #ffcc00);
             color: black;
             border: none;
-            padding: 12px 25px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(255, 153, 0, 0.7);
-        }
-        
-        .open-case-btn::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.4);
-            transition: width 0.3s;
-        }
-        
-        .open-case-btn:hover::after {
-            width: 100%;
+            transition: transform 0.3s;
         }
         
         .open-case-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 25px var(--tg-glow);
         }
         
-        .casino-container {
-            display: none;
-            animation: fadeIn 0.5s;
-            text-align: center;
+        /* Анимации */
+        @keyframes money-pop {
+            0% { transform: scale(0.5) translateY(0); opacity: 0; }
+            50% { transform: scale(1.2) translateY(-20px); opacity: 1; }
+            100% { transform: scale(1) translateY(-40px); opacity: 0; }
         }
         
-        .slot-machine {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .slot-reel {
-            width: 80px;
-            height: 120px;
-            background: #2e4053;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--tg-star);
-            box-shadow: 0 0 10px var(--tg-glow);
-            overflow: hidden;
-        }
-        
-        .slot-reel.spinning {
-            animation: spin 1.5s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-300px); }
-        }
-        
-        .spin-button {
-            background: linear-gradient(45deg, #ff4444, #ff8855);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 20px;
-            cursor: pointer;
+        .money-pop {
+            position: fixed;
+            font-size: 20px;
+            color: #4CAF50;
             font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 15px rgba(255, 68, 68, 0.7);
+            animation: money-pop 1s forwards;
+            pointer-events: none;
+            z-index: 100;
         }
         
-        .spin-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px var(--tg-glow);
+        @keyframes case-open {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
         }
         
-        .spin-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .opening-case {
+            animation: case-open 1s ease-in-out;
         }
         
-        .case-opening-animation {
+        .artifact-popup {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             padding: 20px;
             border-radius: 15px;
             z-index: 200;
             text-align: center;
-            display: none;
-            width: 300px;
-            height: 400px;
-            overflow: hidden;
+            max-width: 80%;
+            animation: artifact-reveal 0.5s forwards;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
         
-        .case-opening-animation.active {
-            display: block;
+        @keyframes artifact-reveal {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
         
-        .case-wheel {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            animation: caseSpin 1s ease-out;
+        .artifact-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
         }
         
-        @keyframes caseSpin {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(360deg); }
+        .artifact-name {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
         
-        .case-option {
-            font-size: 18px;
-            padding: 10px;
-            background: var(--tg-secondary);
-            border-radius: 10px;
-            width: 80%;
-            text-align: center;
-            box-shadow: 0 0 10px var(--tg-glow);
+        .artifact-desc {
+            margin-bottom: 15px;
+        }
+        
+        .close-popup {
+            background: var(--tg-theme-button-color, var(--tg-button));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
         }
         
         .overlay {
@@ -560,92 +426,22 @@
             z-index: 150;
             display: none;
         }
-        
-        .money-pop {
-            position: fixed;
-            font-size: 20px;
-            color: #4CAF50;
-            font-weight: bold;
-            animation: money-pop 1s forwards;
-            pointer-events: none;
-            z-index: 100;
-            text-shadow: 0 0 10px #4CAF50;
-        }
-        
-        @keyframes money-pop {
-            0% { transform: scale(0.5) translateY(0); opacity: 0; }
-            50% { transform: scale(1.2) translateY(-20px); opacity: 1; }
-            100% { transform: scale(1) translateY(-40px); opacity: 0; }
-        }
-        
-        .artifact-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: linear-gradient(135deg, var(--tg-secondary), #2e4053);
-            padding: 20px;
-            border-radius: 15px;
-            z-index: 200;
-            text-align: center;
-            max-width: 80%;
-            animation: artifact-reveal 0.5s forwards;
-            box-shadow: 0 0 30px var(--tg-glow);
-        }
-        
-        @keyframes artifact-reveal {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        
-        .artifact-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px var(--tg-glow);
-        }
-        
-        .artifact-name {
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 5px var(--tg-glow);
-        }
-        
-        .artifact-desc {
-            margin-bottom: 15px;
-        }
-        
-        .close-popup {
-            background: linear-gradient(45deg, var(--tg-button), #6ba8d6);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .close-popup:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--tg-glow);
-        }
     </style>
 </head>
 <body>
     <div class="header">
-        <button class="profile-btn" id="profile-btn"></button>
+        <button class="profile-btn" id="profile-btn">👤</button>
         <div class="nav-buttons">
             <button class="nav-btn active" id="shop-btn">Магазин</button>
             <button class="nav-btn" id="cases-btn">Кейсы</button>
-            <button class="nav-btn" id="casino-btn">Казино</button>
         </div>
     </div>
     
     <div class="container">
+        <!-- Профиль -->
         <div class="profile-container" id="profile-container">
             <div class="profile-header">
-                <div class="profile-avatar"></div>
+                <div class="profile-avatar">👑</div>
                 <div class="profile-info">
                     <h2 id="profile-username">Снюсный Барон</h2>
                     <div class="profile-status" id="profile-status">Новичок</div>
@@ -680,11 +476,12 @@
             </div>
         </div>
         
+        <!-- Магазин снюса -->
         <div class="shop-container" id="shop-container">
             <h2 class="section-title">🎁 Магазин снюса</h2>
             
             <div class="snus-item" id="snus-1">
-                <div class="snus-image" style="background-image: url('https://via.placeholder.com/60/ff4444/000000?text=🍒');"></div>
+                <div class="snus-image" style="background-color: #f44336;"></div>
                 <div class="snus-info">
                     <div class="snus-name">Siberia (Красная)</div>
                     <div class="snus-income">Доход: 5 ⭐️/мин</div>
@@ -694,7 +491,7 @@
             </div>
             
             <div class="snus-item" id="snus-2">
-                <div class="snus-image" style="background-image: url('https://via.placeholder.com/60/2196F3/000000?text=🌊');"></div>
+                <div class="snus-image" style="background-color: #2196F3;"></div>
                 <div class="snus-info">
                     <div class="snus-name">Odens (Синяя)</div>
                     <div class="snus-income">Доход: 15 ⭐️/мин</div>
@@ -704,7 +501,7 @@
             </div>
             
             <div class="snus-item" id="snus-3">
-                <div class="snus-image" style="background-image: url('https://via.placeholder.com/60/4CAF50/000000?text=🍋');"></div>
+                <div class="snus-image" style="background-color: #4CAF50;"></div>
                 <div class="snus-info">
                     <div class="snus-name">Epok (Лимонная)</div>
                     <div class="snus-income">Доход: 30 ⭐️/мин</div>
@@ -714,11 +511,12 @@
             </div>
         </div>
         
+        <!-- Кейсы -->
         <div class="cases-container" id="cases-container">
             <h2 class="section-title">🎰 Кейсы с артефактами</h2>
             
             <div class="case-item">
-                <div class="case-image" style="background-image: url('https://via.placeholder.com/100/5e98d9/000000?text=📦');"></div>
+                <div class="case-image" style="background-color: #5e98d9;"></div>
                 <div class="case-name">Обычный кейс</div>
                 <div class="case-desc">Содержит обычные артефакты</div>
                 <div class="artifacts-list">
@@ -730,7 +528,7 @@
             </div>
             
             <div class="case-item">
-                <div class="case-image" style="background-image: url('https://via.placeholder.com/100/8847ff/000000?text=🔮');"></div>
+                <div class="case-image" style="background-color: #8847ff;"></div>
                 <div class="case-name">Редкий кейс</div>
                 <div class="case-desc">Содержит редкие артефакты</div>
                 <div class="artifacts-list">
@@ -742,7 +540,7 @@
             </div>
             
             <div class="case-item">
-                <div class="case-image" style="background-image: url('https://via.placeholder.com/100/eb4b4b/000000?text=💎');"></div>
+                <div class="case-image" style="background-color: #eb4b4b;"></div>
                 <div class="case-name">Эпический кейс</div>
                 <div class="case-desc">Содержит мощные артефакты</div>
                 <div class="artifacts-list">
@@ -753,31 +551,6 @@
                 <button class="open-case-btn" data-case="epic">Открыть за 1000 ⭐️</button>
             </div>
         </div>
-        
-        <div class="casino-container" id="casino-container">
-            <h2 class="section-title">🎲 Казино</h2>
-            <div class="slot-machine">
-                <div class="slot-reel" id="reel1">🍒</div>
-                <div class="slot-reel" id="reel2">⭐️</div>
-                <div class="slot-reel" id="reel3">🍋</div>
-            </div>
-            <button class="spin-button" id="spin-btn">Крутить (100 ⭐️)</button>
-            <div id="result"></div>
-        </div>
-        
-        <div class="case-opening-animation" id="case-opening-animation">
-            <div class="case-wheel" id="case-wheel">
-                <div class="case-option">+5% к доходу (30 мин)</div>
-                <div class="case-option">+10% к доходу (15 мин)</div>
-                <div class="case-option">x2 доход (5 мин)</div>
-                <div class="case-option">+15% к доходу (1 час)</div>
-                <div class="case-option">+25% к доходу (30 мин)</div>
-                <div class="case-option">x3 доход (10 мин)</div>
-                <div class="case-option">+50% к доходу (2 часа)</div>
-                <div class="case-option">x5 доход (15 мин)</div>
-                <div class="case-option">Перманентный +5% к доходу</div>
-            </div>
-        </div>
     </div>
     
     <div class="overlay" id="overlay"></div>
@@ -785,18 +558,6 @@
     <script>
         const tg = Telegram.WebApp;
         tg.expand();
-        
-        // Использование аватара пользователя Telegram
-        const profileBtn = document.getElementById('profile-btn');
-        const profileAvatar = document.querySelector('.profile-avatar');
-        const user = tg.initDataUnsafe?.user;
-        if (user?.photo_url) {
-            profileBtn.innerHTML = `<img src="${user.photo_url}" alt="Avatar">`;
-            profileAvatar.innerHTML = `<img src="${user.photo_url}" alt="Avatar">`;
-        } else {
-            profileBtn.textContent = '👤';
-            profileAvatar.textContent = '👑';
-        }
         
         // Игровые данные
         let stars = 1000;
@@ -808,9 +569,9 @@
         let activeArtifacts = [];
         
         const snusBrands = [
-            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, icon: "🍒", owned: 0 },
-            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, icon: "🌊", owned: 0 },
-            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, icon: "🍋", owned: 0 }
+            { id: 1, name: "Siberia (Красная)", price: 50, income: 5, color: "#f44336", owned: 0 },
+            { id: 2, name: "Odens (Синяя)", price: 150, income: 15, color: "#2196F3", owned: 0 },
+            { id: 3, name: "Epok (Лимонная)", price: 300, income: 30, color: "#4CAF50", owned: 0 }
         ];
         
         const artifacts = {
@@ -832,21 +593,13 @@
         };
         
         // DOM элементы
+        const profileBtn = document.getElementById('profile-btn');
         const profileContainer = document.getElementById('profile-container');
         const shopBtn = document.getElementById('shop-btn');
         const casesBtn = document.getElementById('cases-btn');
-        const casinoBtn = document.getElementById('casino-btn');
         const shopContainer = document.getElementById('shop-container');
         const casesContainer = document.getElementById('cases-container');
-        const casinoContainer = document.getElementById('casino-container');
         const overlay = document.getElementById('overlay');
-        const caseOpeningAnimation = document.getElementById('case-opening-animation');
-        const caseWheel = document.getElementById('case-wheel');
-        const reel1 = document.getElementById('reel1');
-        const reel2 = document.getElementById('reel2');
-        const reel3 = document.getElementById('reel3');
-        const spinBtn = document.getElementById('spin-btn');
-        const result = document.getElementById('result');
         
         // Инициализация игры
         function initGame() {
@@ -858,34 +611,33 @@
         
         // Настройка обработчиков событий
         function setupEventListeners() {
+            // Кнопки навигации
             profileBtn.addEventListener('click', toggleProfile);
             shopBtn.addEventListener('click', () => switchTab('shop'));
             casesBtn.addEventListener('click', () => switchTab('cases'));
-            casinoBtn.addEventListener('click', () => switchTab('casino'));
             
+            // Кнопки покупки снюса
             snusBrands.forEach(brand => {
-                document.getElementById(`buy-${brand.id}`).addEventListener('click', () => buySnus(brand.id));
-                document.getElementById(`snus-${brand.id}`).querySelector('.snus-image').style.backgroundImage = `url('https://via.placeholder.com/60/${brand.color.slice(1)}/000000?text=${brand.icon}')`;
+                document.getElementById(`buy-${brand.id}`).addEventListener('click', () => {
+                    buySnus(brand.id);
+                });
             });
             
+            // Кнопки открытия кейсов
             document.querySelectorAll('.open-case-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const caseType = this.getAttribute('data-case');
                     openCase(caseType);
                 });
             });
-            
-            spinBtn.addEventListener('click', spinSlots);
         }
         
         // Переключение вкладок
         function switchTab(tab) {
             shopContainer.style.display = 'none';
             casesContainer.style.display = 'none';
-            casinoContainer.style.display = 'none';
             shopBtn.classList.remove('active');
             casesBtn.classList.remove('active');
-            casinoBtn.classList.remove('active');
             
             if (tab === 'shop') {
                 shopContainer.style.display = 'block';
@@ -893,9 +645,6 @@
             } else if (tab === 'cases') {
                 casesContainer.style.display = 'block';
                 casesBtn.classList.add('active');
-            } else if (tab === 'casino') {
-                casinoContainer.style.display = 'block';
-                casinoBtn.classList.add('active');
             }
         }
         
@@ -921,8 +670,11 @@
             stars -= brand.price;
             brand.owned += 1;
             totalIncome += brand.income;
+            
+            // Пересчет цены
             brand.price = Math.floor(brand.price * 1.2);
             
+            // Эффекты
             tg.HapticFeedback.impactOccurred('light');
             showMoneyPop(`-${brand.price}⭐️`, document.getElementById(`buy-${brandId}`));
             
@@ -948,29 +700,20 @@
             stars -= casePrice;
             totalArtifacts += 1;
             
-            caseOpeningAnimation.classList.add('active');
-            const caseOptions = caseWheel.querySelectorAll('.case-option');
-            let selectedIndex = -1;
-            
-            const spinDuration = 2000;
-            const spinInterval = setInterval(() => {
-                caseWheel.style.transform = `rotateX(${Math.random() * 360}deg)`;
-                selectedIndex = Math.floor(Math.random() * caseOptions.length);
-            }, 50);
-            
+            // Анимация открытия
+            const caseBtn = document.querySelector(`.open-case-btn[data-case="${caseType}"]`);
+            caseBtn.classList.add('opening-case');
             setTimeout(() => {
-                clearInterval(spinInterval);
-                caseWheel.style.transition = 'transform 0.5s ease-out';
-                caseWheel.style.transform = `rotateX(${selectedIndex * -40}deg)`;
+                caseBtn.classList.remove('opening-case');
                 
-                setTimeout(() => {
-                    caseOpeningAnimation.classList.remove('active');
-                    const possibleArtifacts = artifacts[caseType];
-                    const artifact = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
-                    applyArtifact(artifact);
-                    showArtifactPopup(artifact);
-                }, 500);
-            }, spinDuration);
+                // Получение артефакта
+                const possibleArtifacts = artifacts[caseType];
+                const artifact = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+                applyArtifact(artifact);
+                
+                // Показ попапа
+                showArtifactPopup(artifact);
+            }, 1000);
             
             updateUI();
             saveGame();
@@ -982,21 +725,34 @@
                 ...artifact.effect,
                 endTime: artifact.effect.permanent ? null : Date.now() + artifact.effect.duration
             });
+            
+            // Пересчет общего дохода с учетом артефактов
             calculateTotalIncome();
         }
         
-        // Расчет общего дохода
+        // Расчет общего дохода с учетом артефактов
         function calculateTotalIncome() {
-            activeArtifacts = activeArtifacts.filter(art => art.permanent || (art.endTime && art.endTime > Date.now()));
+            // Удаляем просроченные артефакты
+            activeArtifacts = activeArtifacts.filter(art => {
+                return art.permanent || (art.endTime && art.endTime > Date.now());
+            });
+            
+            // Базовый доход
             let income = snusBrands.reduce((sum, brand) => sum + (brand.income * brand.owned), 0);
+            
+            // Применяем артефакты
             let multiplier = 1;
-            activeArtifacts.forEach(art => multiplier *= art.multiplier);
+            activeArtifacts.forEach(art => {
+                multiplier *= art.multiplier;
+            });
+            
             totalIncome = Math.floor(income * multiplier);
         }
         
         // Показ попапа с артефактом
         function showArtifactPopup(artifact) {
             overlay.style.display = 'block';
+            
             const popup = document.createElement('div');
             popup.className = 'artifact-popup';
             popup.innerHTML = `
@@ -1005,7 +761,9 @@
                 <div class="artifact-desc">${artifact.desc}</div>
                 <button class="close-popup">OK</button>
             `;
+            
             document.body.appendChild(popup);
+            
             popup.querySelector('.close-popup').addEventListener('click', () => {
                 document.body.removeChild(popup);
                 overlay.style.display = 'none';
@@ -1026,17 +784,22 @@
         // Пассивный доход
         function startIncome() {
             if (incomeInterval) clearInterval(incomeInterval);
+            
             incomeInterval = setInterval(() => {
                 calculateTotalIncome();
+                
                 if (totalIncome > 0) {
-                    const earned = Math.floor(totalIncome / 2);
+                    const earned = Math.floor(totalIncome / 2); // Половина от дохода в минуту каждые 30 сек
                     stars += earned;
                     totalEarned += earned;
+                    
+                    // Проверка уровня
                     checkLevelUp();
+                    
                     updateUI();
                     saveGame();
                 }
-            }, 30000);
+            }, 30000); // Каждые 30 секунд
         }
         
         // Проверка повышения уровня
@@ -1045,6 +808,8 @@
             if (totalEarned >= needed) {
                 level += 1;
                 tg.HapticFeedback.impactOccurred('heavy');
+                
+                // Показ попапа с новым уровнем
                 const popup = document.createElement('div');
                 popup.className = 'artifact-popup';
                 popup.innerHTML = `
@@ -1053,8 +818,10 @@
                     <div class="artifact-desc">Теперь вы ${getStatusName()} ${level} уровня</div>
                     <button class="close-popup">OK</button>
                 `;
+                
                 overlay.style.display = 'block';
                 document.body.appendChild(popup);
+                
                 popup.querySelector('.close-popup').addEventListener('click', () => {
                     document.body.removeChild(popup);
                     overlay.style.display = 'none';
@@ -1074,13 +841,14 @@
         
         // Обновление интерфейса
         function updateUI() {
-            document.getElementById('profile-stars').textContent = stars;
+            document.getElementById('stars').textContent = stars;
+            
+            // Обновление магазина
             snusBrands.forEach(brand => {
                 document.getElementById(`count-${brand.id}`).textContent = brand.owned;
                 document.getElementById(`buy-${brand.id}`).textContent = `${brand.price} ⭐️`;
                 document.getElementById(`buy-${brand.id}`).disabled = stars < brand.price;
             });
-            spinBtn.disabled = stars < 100;
         }
         
         // Обновление профиля
@@ -1091,8 +859,11 @@
             document.getElementById('profile-artifacts').textContent = totalArtifacts;
             document.getElementById('profile-earned').textContent = totalEarned;
             document.getElementById('profile-level').textContent = level;
+            
             const status = getStatusName();
             document.getElementById('profile-status').textContent = status;
+            
+            // Цвет статуса
             const statusEl = document.getElementById('profile-status');
             if (status.includes("Король")) statusEl.style.color = "#ffeb3b";
             else if (status.includes("Мафиозный")) statusEl.style.color = "#d32ce6";
@@ -1104,7 +875,15 @@
         
         // Сохранение игры
         function saveGame() {
-            const gameData = { stars, totalEarned, totalIncome, totalArtifacts, level, snusBrands, activeArtifacts };
+            const gameData = {
+                stars,
+                totalEarned,
+                totalIncome,
+                totalArtifacts,
+                level,
+                snusBrands,
+                activeArtifacts
+            };
             localStorage.setItem('snusBaronSave', JSON.stringify(gameData));
         }
         
@@ -1118,6 +897,7 @@
                 totalIncome = gameData.totalIncome || 0;
                 totalArtifacts = gameData.totalArtifacts || 0;
                 level = gameData.level || 1;
+                
                 if (gameData.snusBrands) {
                     gameData.snusBrands.forEach(savedBrand => {
                         const brand = snusBrands.find(b => b.id === savedBrand.id);
@@ -1127,62 +907,18 @@
                         }
                     });
                 }
+                
                 activeArtifacts = gameData.activeArtifacts || [];
-                activeArtifacts = activeArtifacts.filter(art => art.permanent || (art.endTime && art.endTime > Date.now()));
+                
+                // Фильтрация просроченных артефактов
+                activeArtifacts = activeArtifacts.filter(art => {
+                    return art.permanent || (art.endTime && art.endTime > Date.now());
+                });
             }
         }
         
         // Автосохранение
         setInterval(saveGame, 30000);
-        
-        // Слоты
-        function spinSlots() {
-            if (stars < 100) {
-                tg.showAlert("Недостаточно звёзд!");
-                return;
-            }
-            
-            stars -= 100;
-            [reel1, reel2, reel3].forEach(reel => reel.classList.add('spinning'));
-            spinBtn.disabled = true;
-            
-            const symbols = ['🍒', '⭐️', '🍋', '💎', '🌟'];
-            let results = [];
-            
-            const spinDuration = 1500;
-            setTimeout(() => {
-                [reel1, reel2, reel3].forEach(reel => reel.classList.remove('spinning'));
-                results = [symbols[Math.floor(Math.random() * symbols.length)], symbols[Math.floor(Math.random() * symbols.length)], symbols[Math.floor(Math.random() * symbols.length)]];
-                reel1.textContent = results[0];
-                reel2.textContent = results[1];
-                reel3.textContent = results[2];
-                
-                let winnings = 0;
-                if (results.every(r => r === results[0])) {
-                    winnings = 500;
-                    tg.HapticFeedback.impactOccurred('heavy');
-                    result.textContent = `Джекпот! +${winnings} ⭐️`;
-                    result.style.color = '#ffeb3b';
-                } else if (results.filter(r => r === results[0]).length >= 2) {
-                    winnings = 200;
-                    tg.HapticFeedback.impactOccurred('medium');
-                    result.textContent = `Выигрыш! +${winnings} ⭐️`;
-                    result.style.color = '#4CAF50';
-                } else {
-                    result.textContent = "Нет выигрыша!";
-                    result.style.color = '#ff4444';
-                }
-                
-                if (winnings > 0) {
-                    stars += winnings;
-                    showMoneyPop(`+${winnings}⭐️`, spinBtn);
-                }
-                
-                spinBtn.disabled = false;
-                updateUI();
-                saveGame();
-            }, spinDuration);
-        }
         
         // Запуск игры
         initGame();
