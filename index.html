@@ -16,6 +16,7 @@
             --tg-accent: #2b5278;
             --tg-button: #3d6d99;
             --tg-star: #ffcc00;
+            --tg-coin: #4CAF50;
             --notification: #ff4757;
             --common: #a0a0a0;
             --uncommon: #4CAF50;
@@ -94,6 +95,12 @@
         .star-icon {
             color: var(--tg-star);
             text-shadow: 0 0 8px var(--tg-star);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        .coin-icon {
+            color: var(--tg-coin);
+            text-shadow: 0 0 8px var(--tg-coin);
             animation: pulse 1.5s infinite alternate;
         }
         
@@ -449,7 +456,12 @@
             z-index: 10;
         }
         
-        /* Артефакты */
+        /* Инвентарь артефактов */
+        .inventory-container {
+            display: none;
+            padding: 15px;
+        }
+        
         .artifacts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -498,8 +510,38 @@
         /* Казино */
         .casino-container {
             display: none;
+            padding: 15px;
         }
         
+        .casino-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .casino-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid var(--tg-button);
+        }
+        
+        .casino-tab.active {
+            background: var(--tg-button);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .casino-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Слоты */
         .slot-machine {
             width: 100%;
             background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
@@ -585,6 +627,79 @@
             cursor: not-allowed;
             transform: none !important;
             box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        /* Мини-игра "Минер" */
+        .miner-game {
+            display: none;
+            margin-top: 20px;
+            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid var(--tg-button);
+        }
+        
+        .miner-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .miner-cell {
+            aspect-ratio: 1/1;
+            background: var(--tg-button);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .miner-cell:hover {
+            transform: scale(1.05);
+        }
+        
+        .miner-cell.revealed {
+            background: var(--tg-theme-bg-color, var(--tg-bg));
+        }
+        
+        .miner-cell.bomb {
+            background: #f44336;
+            color: white;
+        }
+        
+        .miner-cell.coin {
+            background: #FFD700;
+            color: black;
+        }
+        
+        .miner-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .miner-button {
+            width: 100%;
+            background: linear-gradient(to right, #FF9800, #F57C00);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .miner-button:hover {
+            background: linear-gradient(to right, #F57C00, #FF9800);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
         }
         
         /* Профиль */
@@ -697,104 +812,8 @@
             box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2) !important;
         }
         
-        /* Настройки */
-        .settings-container {
-            display: none;
-            padding: 15px;
-        }
-        
-        .settings-item {
-            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        
-        .settings-title {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: var(--tg-star);
-        }
-        
-        .theme-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .theme-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .theme-option:hover {
-            transform: scale(1.1);
-        }
-        
-        .theme-option.selected {
-            border-color: var(--tg-star);
-            transform: scale(1.1);
-        }
-        
-        /* Новая функция - Снюс-битва */
-        .battle-container {
-            display: none;
-            padding: 15px;
-        }
-        
-        .battle-opponents {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .battle-opponent {
-            background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid var(--tg-button);
-        }
-        
-        .battle-opponent:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .battle-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            background-size: cover;
-            background-position: center;
-            border: 2px solid var(--tg-star);
-        }
-        
-        .battle-name {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        
-        .battle-power {
-            font-size: 12px;
-            color: var(--tg-star);
-        }
-        
-        .battle-reward {
-            font-size: 12px;
-            color: #4CAF50;
-        }
-        
-        /* Новая функция - Снюс-фонд */
-        .fund-container {
+        /* Новая функция - Обмен валюты */
+        .exchange-container {
             margin-top: 20px;
             background: var(--tg-theme-secondary-bg-color, var(--tg-secondary));
             border-radius: 10px;
@@ -803,24 +822,15 @@
             border: 2px solid var(--tg-button);
         }
         
-        .fund-progress {
-            height: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
+        .exchange-rate {
+            font-size: 18px;
             margin: 10px 0;
-            overflow: hidden;
+            color: var(--tg-star);
         }
         
-        .fund-progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, #4CAF50, #2E7D32);
-            width: 0%;
-            transition: width 0.5s;
-        }
-        
-        .fund-button {
+        .exchange-button {
             width: 100%;
-            background: linear-gradient(to right, #2196F3, #0d47a1);
+            background: linear-gradient(to right, #9C27B0, #7B1FA2);
             color: white;
             border: none;
             padding: 12px;
@@ -832,8 +842,8 @@
             box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
         }
         
-        .fund-button:hover {
-            background: linear-gradient(to right, #0d47a1, #2196F3);
+        .exchange-button:hover {
+            background: linear-gradient(to right, #7B1FA2, #9C27B0);
             transform: translateY(-2px);
             box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
         }
@@ -890,13 +900,14 @@
         <div class="balance-display">
             <span class="star-icon">⭐️</span>
             <span id="balance">500</span>
+            <span class="coin-icon">🪙</span>
+            <span id="coins">100</span>
         </div>
         <div class="nav-buttons">
             <button class="nav-btn active" id="shop-btn"><i class="fas fa-store"></i></button>
             <button class="nav-btn" id="cases-btn"><i class="fas fa-gift"></i></button>
             <button class="nav-btn" id="casino-btn"><i class="fas fa-dice"></i></button>
-            <button class="nav-btn" id="battle-btn"><i class="fas fa-trophy"></i></button>
-            <button class="nav-btn" id="settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="nav-btn" id="inventory-btn"><i class="fas fa-backpack"></i></button>
         </div>
     </div>
     
@@ -912,7 +923,7 @@
                     <div class="snus-name">SIBERIA</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 1 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-1">0</span></div>
-                    <button class="buy-button" id="buy-1"><i class="fas fa-shopping-cart"></i> 20 ⭐️</button>
+                    <button class="buy-button" id="buy-1"><i class="fas fa-shopping-cart"></i> 10 ⭐️</button>
                 </div>
                 
                 <!-- Odens -->
@@ -921,7 +932,7 @@
                     <div class="snus-name">ODENS</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 2 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-2">0</span></div>
-                    <button class="buy-button" id="buy-2"><i class="fas fa-shopping-cart"></i> 50 ⭐️</button>
+                    <button class="buy-button" id="buy-2"><i class="fas fa-shopping-cart"></i> 25 ⭐️</button>
                 </div>
                 
                 <!-- Epok -->
@@ -930,7 +941,7 @@
                     <div class="snus-name">EPOK</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 3 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-3">0</span></div>
-                    <button class="buy-button" id="buy-3"><i class="fas fa-shopping-cart"></i> 100 ⭐️</button>
+                    <button class="buy-button" id="buy-3"><i class="fas fa-shopping-cart"></i> 50 ⭐️</button>
                 </div>
                 
                 <!-- Thunder -->
@@ -939,7 +950,7 @@
                     <div class="snus-name">THUNDER</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 5 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-4">0</span></div>
-                    <button class="buy-button" id="buy-4"><i class="fas fa-shopping-cart"></i> 200 ⭐️</button>
+                    <button class="buy-button" id="buy-4"><i class="fas fa-shopping-cart"></i> 100 ⭐️</button>
                 </div>
                 
                 <!-- G.4 -->
@@ -948,7 +959,7 @@
                     <div class="snus-name">G.4</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 8 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-5">0</span></div>
-                    <button class="buy-button" id="buy-5"><i class="fas fa-shopping-cart"></i> 350 ⭐️</button>
+                    <button class="buy-button" id="buy-5"><i class="fas fa-shopping-cart"></i> 175 ⭐️</button>
                 </div>
                 
                 <!-- Lyft -->
@@ -957,7 +968,7 @@
                     <div class="snus-name">LYFT</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 12 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-6">0</span></div>
-                    <button class="buy-button" id="buy-6"><i class="fas fa-shopping-cart"></i> 500 ⭐️</button>
+                    <button class="buy-button" id="buy-6"><i class="fas fa-shopping-cart"></i> 250 ⭐️</button>
                 </div>
                 
                 <!-- Killa -->
@@ -966,7 +977,7 @@
                     <div class="snus-name">KILLA</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 20 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-7">0</span></div>
-                    <button class="buy-button" id="buy-7"><i class="fas fa-shopping-cart"></i> 800 ⭐️</button>
+                    <button class="buy-button" id="buy-7"><i class="fas fa-shopping-cart"></i> 400 ⭐️</button>
                 </div>
                 
                 <!-- Nordic Spirit -->
@@ -975,43 +986,7 @@
                     <div class="snus-name">NORDIC</div>
                     <div class="snus-income"><i class="fas fa-coins"></i> 30 ⭐️/мин</div>
                     <div class="snus-owned">Куплено: <span id="count-8">0</span></div>
-                    <button class="buy-button" id="buy-8"><i class="fas fa-shopping-cart"></i> 1200 ⭐️</button>
-                </div>
-                
-                <!-- Ace -->
-                <div class="snus-item">
-                    <div class="snus-image"><i class="fas fa-spade" style="color: #3a0ca3;"></i></div>
-                    <div class="snus-name">ACE</div>
-                    <div class="snus-income"><i class="fas fa-coins"></i> 45 ⭐️/мин</div>
-                    <div class="snus-owned">Куплено: <span id="count-9">0</span></div>
-                    <button class="buy-button" id="buy-9"><i class="fas fa-shopping-cart"></i> 1800 ⭐️</button>
-                </div>
-                
-                <!-- Pablo -->
-                <div class="snus-item">
-                    <div class="snus-image"><i class="fas fa-fire-alt" style="color: #ff5400;"></i></div>
-                    <div class="snus-name">PABLO</div>
-                    <div class="snus-income"><i class="fas fa-coins"></i> 60 ⭐️/мин</div>
-                    <div class="snus-owned">Куплено: <span id="count-10">0</span></div>
-                    <button class="buy-button" id="buy-10"><i class="fas fa-shopping-cart"></i> 2500 ⭐️</button>
-                </div>
-                
-                <!-- Fox -->
-                <div class="snus-item">
-                    <div class="snus-image"><i class="fas fa-paw" style="color: #ff5400;"></i></div>
-                    <div class="snus-name">FOX</div>
-                    <div class="snus-income"><i class="fas fa-coins"></i> 80 ⭐️/мин</div>
-                    <div class="snus-owned">Куплено: <span id="count-11">0</span></div>
-                    <button class="buy-button" id="buy-11"><i class="fas fa-shopping-cart"></i> 3500 ⭐️</button>
-                </div>
-                
-                <!-- FEDRS -->
-                <div class="snus-item">
-                    <div class="snus-image"><i class="fas fa-flag" style="color: #ff5400;"></i></div>
-                    <div class="snus-name">FEDRS</div>
-                    <div class="snus-income"><i class="fas fa-coins"></i> 100 ⭐️/мин</div>
-                    <div class="snus-owned">Куплено: <span id="count-12">0</span></div>
-                    <button class="buy-button" id="buy-12"><i class="fas fa-shopping-cart"></i> 5000 ⭐️</button>
+                    <button class="buy-button" id="buy-8"><i class="fas fa-shopping-cart"></i> 600 ⭐️</button>
                 </div>
             </div>
             
@@ -1023,15 +998,12 @@
                 <button class="bonus-button" id="bonus-button">Получить бонус</button>
             </div>
             
-            <!-- Новая функция - Снюс-фонд -->
-            <div class="fund-container">
-                <h3>Снюс-фонд</h3>
-                <p>Инвестируйте звёзды и получайте прибыль</p>
-                <div class="fund-progress">
-                    <div class="fund-progress-bar" id="fund-progress"></div>
-                </div>
-                <p>До выплаты: <span id="fund-timer">24ч</span></p>
-                <button class="fund-button" id="fund-button">Инвестировать 1000 ⭐️</button>
+            <!-- Новая функция - Обмен валюты -->
+            <div class="exchange-container">
+                <h3>Обмен валюты</h3>
+                <p>Обменяйте монеты на звёзды</p>
+                <div class="exchange-rate">1 🪙 = 5 ⭐️</div>
+                <button class="exchange-button" id="exchange-button">Обменять 10 🪙</button>
             </div>
         </div>
         
@@ -1079,46 +1051,6 @@
                     <div class="case-price">600 ⭐️</div>
                     <div class="case-chance">Шанс на артефакт: 50%</div>
                 </div>
-                
-                <!-- Тёмный кейс -->
-                <div class="case-item" id="case-5">
-                    <div class="case-image dark">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                    <div class="case-name">Тёмный</div>
-                    <div class="case-price">1000 ⭐️</div>
-                    <div class="case-chance">Шанс на артефакт: 65%</div>
-                </div>
-                
-                <!-- Легендарный кейс -->
-                <div class="case-item" id="case-6">
-                    <div class="case-image legendary">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div class="case-name">Легендарный</div>
-                    <div class="case-price">2000 ⭐️</div>
-                    <div class="case-chance">Шанс на артефакт: 80%</div>
-                </div>
-                
-                <!-- Мифический кейс -->
-                <div class="case-item" id="case-7">
-                    <div class="case-image mythic">
-                        <i class="fas fa-dragon"></i>
-                    </div>
-                    <div class="case-name">Мифический</div>
-                    <div class="case-price">5000 ⭐️</div>
-                    <div class="case-chance">Шанс на артефакт: 95%</div>
-                </div>
-                
-                <!-- Кейс SNUS GOD -->
-                <div class="case-item" id="case-8">
-                    <div class="case-image" style="border-color: #ff00ff; color: #ff00ff;">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <div class="case-name">SNUS GOD</div>
-                    <div class="case-price">10000 ⭐️</div>
-                    <div class="case-chance">100% артефакт</div>
-                </div>
             </div>
             
             <!-- Рулетка -->
@@ -1128,17 +1060,19 @@
             </div>
             
             <button class="spin-button" id="spin-button">Крутить за 100 ⭐️</button>
-            
-            <!-- Инвентарь артефактов -->
-            <h3 style="margin-top: 30px;">Ваши артефакты</h3>
-            <div class="artifacts-grid" id="artifacts-grid"></div>
         </div>
         
         <!-- Казино -->
         <div class="casino-container" id="casino-container">
             <h2 class="section-title">СНЮС КАЗИНО</h2>
             
-            <div class="slot-machine">
+            <div class="casino-tabs">
+                <div class="casino-tab active" id="slots-tab">Слоты</div>
+                <div class="casino-tab" id="miner-tab">Минер</div>
+            </div>
+            
+            <!-- Слоты -->
+            <div class="slot-machine" id="slot-machine">
                 <div class="slots">
                     <div class="slot" id="slot1">7</div>
                     <div class="slot" id="slot2">7</div>
@@ -1146,90 +1080,46 @@
                     <div class="slot-center"></div>
                 </div>
                 <button class="slot-button" id="slot-button">Крутить за 50 ⭐️</button>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <p>3 одинаковых символа - x5 ставки</p>
+                    <p>3 семёрки - x10 ставки</p>
+                </div>
             </div>
             
-            <div style="margin-top: 20px; text-align: center;">
-                <p>3 одинаковых символа - x5 ставки</p>
-                <p>3 семёрки - x10 ставки</p>
+            <!-- Мини-игра "Минер" -->
+            <div class="miner-game" id="miner-game">
+                <div class="miner-stats">
+                    <div>Осталось: <span id="miner-remaining">5</span> 🪙</div>
+                    <div>Выигрыш: <span id="miner-win">0</span> ⭐️</div>
+                </div>
+                
+                <div class="miner-grid" id="miner-grid"></div>
+                
+                <button class="miner-button" id="miner-button">Играть за 10 🪙</button>
+                
+                <div style="margin-top: 15px; text-align: center; font-size: 12px;">
+                    <p>Найдите монеты, избегая бомб!</p>
+                    <p>Каждая монета = +10 ⭐️, бомба = конец игры</p>
+                </div>
             </div>
         </div>
         
-        <!-- Снюс-битва -->
-        <div class="battle-container" id="battle-container">
-            <h2 class="section-title">СНЮС-БИТВА</h2>
-            <p style="text-align: center; margin-bottom: 20px;">Сразитесь с другими игроками и получите награду!</p>
+        <!-- Инвентарь артефактов -->
+        <div class="inventory-container" id="inventory-container">
+            <h2 class="section-title">ИНВЕНТАРЬ</h2>
             
-            <div class="battle-opponents">
-                <div class="battle-opponent" id="opponent-1">
-                    <div class="battle-avatar" style="background-image: url('https://robohash.org/snus1.png?size=100x100')"></div>
-                    <div class="battle-name">Снюс-новичок</div>
-                    <div class="battle-power">Сила: 500</div>
-                    <div class="battle-reward">Награда: 200 ⭐️</div>
-                </div>
-                
-                <div class="battle-opponent" id="opponent-2">
-                    <div class="battle-avatar" style="background-image: url('https://robohash.org/snus2.png?size=100x100')"></div>
-                    <div class="battle-name">Снюс-дилер</div>
-                    <div class="battle-power">Сила: 1500</div>
-                    <div class="battle-reward">Награда: 500 ⭐️</div>
-                </div>
-                
-                <div class="battle-opponent" id="opponent-3">
-                    <div class="battle-avatar" style="background-image: url('https://robohash.org/snus3.png?size=100x100')"></div>
-                    <div class="battle-name">Снюс-барон</div>
-                    <div class="battle-power">Сила: 5000</div>
-                    <div class="battle-reward">Награда: 1500 ⭐️</div>
-                </div>
-                
-                <div class="battle-opponent" id="opponent-4">
-                    <div class="battle-avatar" style="background-image: url('https://robohash.org/snus4.png?size=100x100')"></div>
-                    <div class="battle-name">Снюс-король</div>
-                    <div class="battle-power">Сила: 15000</div>
-                    <div class="battle-reward">Награда: 5000 ⭐️</div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div class="balance-display" style="display: inline-flex; margin-bottom: 10px;">
+                    <span class="star-icon">⭐️</span>
+                    <span id="inventory-stars">500</span>
+                    <span class="coin-icon">🪙</span>
+                    <span id="inventory-coins">100</span>
                 </div>
             </div>
             
-            <div style="margin-top: 20px; text-align: center;">
-                <p>Ваша сила: <span id="player-power">0</span></p>
-                <p>Шанс победы зависит от соотношения сил</p>
-            </div>
-        </div>
-        
-        <!-- Настройки -->
-        <div class="settings-container" id="settings-container">
-            <h2 class="section-title">НАСТРОЙКИ</h2>
-            
-            <div class="settings-item">
-                <div class="settings-title">Тема приложения</div>
-                <div class="theme-selector">
-                    <div class="theme-option selected" style="background: #0f1923;" data-theme="default"></div>
-                    <div class="theme-option" style="background: #1a1a2e;" data-theme="dark-purple"></div>
-                    <div class="theme-option" style="background: #16213e;" data-theme="ocean"></div>
-                    <div class="theme-option" style="background: #1e5128;" data-theme="forest"></div>
-                    <div class="theme-option" style="background: #3d0000;" data-theme="blood"></div>
-                    <div class="theme-option" style="background: #000000;" data-theme="black"></div>
-                </div>
-            </div>
-            
-            <div class="settings-item">
-                <div class="settings-title">Уведомления</div>
-                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <input type="checkbox" id="notifications-toggle" checked>
-                    <span>Включить уведомления</span>
-                </label>
-            </div>
-            
-            <div class="settings-item">
-                <div class="settings-title">Звуки</div>
-                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <input type="checkbox" id="sounds-toggle" checked>
-                    <span>Включить звуковые эффекты</span>
-                </label>
-            </div>
-            
-            <button class="bonus-button" id="reset-button" style="background: linear-gradient(to right, #f44336, #b71c1c); margin-top: 20px;">
-                Сбросить прогресс
-            </button>
+            <h3 style="margin-top: 10px;">Ваши артефакты</h3>
+            <div class="artifacts-grid" id="artifacts-grid"></div>
         </div>
         
         <!-- Профиль -->
@@ -1242,6 +1132,8 @@
                     <div class="balance-display">
                         <span class="star-icon">⭐️</span>
                         <span id="profile-balance">500</span>
+                        <span class="coin-icon">🪙</span>
+                        <span id="profile-coins">100</span>
                     </div>
                 </div>
             </div>
@@ -1264,12 +1156,12 @@
                     <div class="stat-name">Открыто кейсов</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="total-battles">0</div>
-                    <div class="stat-name">Побед в битвах</div>
+                    <div class="stat-value" id="total-coins">0</div>
+                    <div class="stat-name">Всего монет</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="total-invested">0</div>
-                    <div class="stat-name">Инвестировано</div>
+                    <div class="stat-value" id="total-miner">0</div>
+                    <div class="stat-name">Найдено монет</div>
                 </div>
             </div>
         </div>
@@ -1295,43 +1187,31 @@
         
         // Игровые данные
         let stars = 500;
+        let coins = 100;
         let totalEarned = 0;
         let totalIncome = 0;
         let totalCasesOpened = 0;
-        let totalBattlesWon = 0;
-        let totalInvested = 0;
+        let totalCoinsEarned = 0;
+        let totalMinerCoins = 0;
         let artifacts = [];
         let lastBonusTime = 0;
-        let lastFundTime = 0;
-        let fundAmount = 0;
-        let notificationsEnabled = true;
-        let soundsEnabled = true;
-        let currentTheme = 'default';
         
         const snusBrands = [
-            { id: 1, name: "SIBERIA", price: 20, income: 1, icon: "fas fa-snowflake", color: "#00b4d8", owned: 0 },
-            { id: 2, name: "ODENS", price: 50, income: 2, icon: "fas fa-fire", color: "#ff5400", owned: 0 },
-            { id: 3, name: "EPOK", price: 100, income: 3, icon: "fas fa-leaf", color: "#38b000", owned: 0 },
-            { id: 4, name: "THUNDER", price: 200, income: 5, icon: "fas fa-bolt", color: "#ffd700", owned: 0 },
-            { id: 5, name: "G.4", price: 350, income: 8, icon: "fas fa-apple-alt", color: "#ff5400", owned: 0 },
-            { id: 6, name: "LYFT", price: 500, income: 12, icon: "fas fa-wind", color: "#00b4d8", owned: 0 },
-            { id: 7, name: "KILLA", price: 800, income: 20, icon: "fas fa-skull", color: "#3a0ca3", owned: 0 },
-            { id: 8, name: "NORDIC", price: 1200, income: 30, icon: "fas fa-mountain", color: "#00b4d8", owned: 0 },
-            { id: 9, name: "ACE", price: 1800, income: 45, icon: "fas fa-spade", color: "#3a0ca3", owned: 0 },
-            { id: 10, name: "PABLO", price: 2500, income: 60, icon: "fas fa-fire-alt", color: "#ff5400", owned: 0 },
-            { id: 11, name: "FOX", price: 3500, income: 80, icon: "fas fa-paw", color: "#ff5400", owned: 0 },
-            { id: 12, name: "FEDRS", price: 5000, income: 100, icon: "fas fa-flag", color: "#ff5400", owned: 0 }
+            { id: 1, name: "SIBERIA", price: 10, income: 1, icon: "fas fa-snowflake", color: "#00b4d8", owned: 0 },
+            { id: 2, name: "ODENS", price: 25, income: 2, icon: "fas fa-fire", color: "#ff5400", owned: 0 },
+            { id: 3, name: "EPOK", price: 50, income: 3, icon: "fas fa-leaf", color: "#38b000", owned: 0 },
+            { id: 4, name: "THUNDER", price: 100, income: 5, icon: "fas fa-bolt", color: "#ffd700", owned: 0 },
+            { id: 5, name: "G.4", price: 175, income: 8, icon: "fas fa-apple-alt", color: "#ff5400", owned: 0 },
+            { id: 6, name: "LYFT", price: 250, income: 12, icon: "fas fa-wind", color: "#00b4d8", owned: 0 },
+            { id: 7, name: "KILLA", price: 400, income: 20, icon: "fas fa-skull", color: "#3a0ca3", owned: 0 },
+            { id: 8, name: "NORDIC", price: 600, income: 30, icon: "fas fa-mountain", color: "#00b4d8", owned: 0 }
         ];
         
         const cases = [
             { id: 1, name: "Ледниковый", price: 50, icon: "fas fa-igloo", rarity: "ice", artifactChance: 0.15 },
             { id: 2, name: "Огненный", price: 150, icon: "fas fa-fire", rarity: "fire", artifactChance: 0.25 },
             { id: 3, name: "Лесной", price: 300, icon: "fas fa-tree", rarity: "jungle", artifactChance: 0.35 },
-            { id: 4, name: "Золотой", price: 600, icon: "fas fa-coins", rarity: "gold", artifactChance: 0.5 },
-            { id: 5, name: "Тёмный", price: 1000, icon: "fas fa-moon", rarity: "dark", artifactChance: 0.65 },
-            { id: 6, name: "Легендарный", price: 2000, icon: "fas fa-crown", rarity: "legendary", artifactChance: 0.8 },
-            { id: 7, name: "Мифический", price: 5000, icon: "fas fa-dragon", rarity: "mythic", artifactChance: 0.95 },
-            { id: 8, name: "SNUS GOD", price: 10000, icon: "fas fa-gem", rarity: "mythic", artifactChance: 1.0 }
+            { id: 4, name: "Золотой", price: 600, icon: "fas fa-coins", rarity: "gold", artifactChance: 0.5 }
         ];
         
         const artifactsData = [
@@ -1353,75 +1233,13 @@
             // Золотые артефакты
             { id: 10, name: "Золотая монета", effect: "+5% к доходу", icon: "fas fa-coins", rarity: "gold", multiplier: 0.05 },
             { id: 11, name: "Слиток золота", effect: "+10% к доходу", icon: "fas fa-gem", rarity: "gold", multiplier: 0.1 },
-            { id: 12, name: "Корона короля", effect: "+15% к доходу", icon: "fas fa-crown", rarity: "gold", multiplier: 0.15 },
-            
-            // Тёмные артефакты
-            { id: 13, name: "Тёмный кристалл", effect: "+8% к доходу", icon: "fas fa-moon", rarity: "dark", multiplier: 0.08 },
-            { id: 14, name: "Клык вампира", effect: "+12% к доходу", icon: "fas fa-skull", rarity: "dark", multiplier: 0.12 },
-            { id: 15, name: "Тень ночи", effect: "+18% к доходу", icon: "fas fa-cloud-moon", rarity: "dark", multiplier: 0.18 },
-            
-            // Легендарные артефакты
-            { id: 16, name: "Меч легенды", effect: "+20% к доходу", icon: "fas fa-sword", rarity: "legendary", multiplier: 0.2 },
-            { id: 17, name: "Щит героя", effect: "+25% к доходу", icon: "fas fa-shield-alt", rarity: "legendary", multiplier: 0.25 },
-            { id: 18, name: "Кольцо всевластия", effect: "+30% к доходу", icon: "fas fa-ring", rarity: "legendary", multiplier: 0.3 },
-            
-            // Мифические артефакты
-            { id: 19, name: "Кровь дракона", effect: "+40% к доходу", icon: "fas fa-dragon", rarity: "mythic", multiplier: 0.4 },
-            { id: 20, name: "Перо феникса", effect: "+50% к доходу", icon: "fas fa-feather-alt", rarity: "mythic", multiplier: 0.5 },
-            { id: 21, name: "Слеза ангела", effect: "+60% к доходу", icon: "fas fa-cloud", rarity: "mythic", multiplier: 0.6 },
-            
-            // SNUS GOD артефакты
-            { id: 22, name: "Сердце SNUS GOD", effect: "+100% к доходу", icon: "fas fa-heart", rarity: "mythic", multiplier: 1.0 },
-            { id: 23, name: "Душа SNUS GOD", effect: "+150% к доходу", icon: "fas fa-star", rarity: "mythic", multiplier: 1.5 },
-            { id: 24, name: "Венец SNUS GOD", effect: "+200% к доходу", icon: "fas fa-crown", rarity: "mythic", multiplier: 2.0 }
+            { id: 12, name: "Корона короля", effect: "+15% к доходу", icon: "fas fa-crown", rarity: "gold", multiplier: 0.15 }
         ];
         
         const slotSymbols = ['7', '🍒', '🍋', '🍊', '⭐', '🍇'];
         
-        const opponents = [
-            { id: 1, name: "Снюс-новичок", power: 500, reward: 200, avatar: "snus1" },
-            { id: 2, name: "Снюс-дилер", power: 1500, reward: 500, avatar: "snus2" },
-            { id: 3, name: "Снюс-барон", power: 5000, reward: 1500, avatar: "snus3" },
-            { id: 4, name: "Снюс-король", power: 15000, reward: 5000, avatar: "snus4" }
-        ];
-        
-        const themes = {
-            'default': {
-                bg: '#0f1923',
-                secondary: '#1a2a38',
-                button: '#3d6d99'
-            },
-            'dark-purple': {
-                bg: '#1a1a2e',
-                secondary: '#16213e',
-                button: '#4a148c'
-            },
-            'ocean': {
-                bg: '#16213e',
-                secondary: '#0f3460',
-                button: '#1f4287'
-            },
-            'forest': {
-                bg: '#1e5128',
-                secondary: '#4e9f3d',
-                button: '#191a19'
-            },
-            'blood': {
-                bg: '#3d0000',
-                secondary: '#950101',
-                button: '#ff0000'
-            },
-            'black': {
-                bg: '#000000',
-                secondary: '#1a1a1a',
-                button: '#333333'
-            }
-        };
-        
         // Показать уведомление
         function showNotification(text) {
-            if (!notificationsEnabled) return;
-            
             const notification = document.getElementById('notification');
             notification.textContent = text;
             notification.style.display = 'block';
@@ -1429,14 +1247,6 @@
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
-        }
-        
-        // Воспроизвести звук
-        function playSound(type) {
-            if (!soundsEnabled) return;
-            
-            // В реальном приложении здесь было бы воспроизведение звука
-            console.log(`Playing sound: ${type}`);
         }
         
         // Инициализация игры
@@ -1447,9 +1257,8 @@
             updateUI();
             startIncome();
             initRoulette();
+            initMinerGame();
             updateBonusTimer();
-            updateFundTimer();
-            updatePlayerPower();
             
             // Первое уведомление
             setTimeout(() => {
@@ -1464,8 +1273,7 @@
             document.getElementById('shop-btn').addEventListener('click', () => switchTab('shop'));
             document.getElementById('cases-btn').addEventListener('click', () => switchTab('cases'));
             document.getElementById('casino-btn').addEventListener('click', () => switchTab('casino'));
-            document.getElementById('battle-btn').addEventListener('click', () => switchTab('battle'));
-            document.getElementById('settings-btn').addEventListener('click', () => switchTab('settings'));
+            document.getElementById('inventory-btn').addEventListener('click', () => switchTab('inventory'));
             
             // Кнопки покупки снюса
             snusBrands.forEach(brand => {
@@ -1490,37 +1298,15 @@
             // Бонус
             document.getElementById('bonus-button').addEventListener('click', claimBonus);
             
-            // Фонд
-            document.getElementById('fund-button').addEventListener('click', investFund);
+            // Обмен валюты
+            document.getElementById('exchange-button').addEventListener('click', exchangeCoins);
             
-            // Битва
-            opponents.forEach(opponent => {
-                document.getElementById(`opponent-${opponent.id}`).addEventListener('click', () => {
-                    startBattle(opponent.id);
-                });
-            });
+            // Вкладки казино
+            document.getElementById('slots-tab').addEventListener('click', () => switchCasinoTab('slots'));
+            document.getElementById('miner-tab').addEventListener('click', () => switchCasinoTab('miner'));
             
-            // Настройки темы
-            document.querySelectorAll('.theme-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    changeTheme(option.dataset.theme);
-                });
-            });
-            
-            // Настройки уведомлений
-            document.getElementById('notifications-toggle').addEventListener('change', (e) => {
-                notificationsEnabled = e.target.checked;
-                saveGame();
-            });
-            
-            // Настройки звуков
-            document.getElementById('sounds-toggle').addEventListener('change', (e) => {
-                soundsEnabled = e.target.checked;
-                saveGame();
-            });
-            
-            // Сброс прогресса
-            document.getElementById('reset-button').addEventListener('click', resetProgress);
+            // Минер
+            document.getElementById('miner-button').addEventListener('click', startMinerGame);
         }
         
         // Переключение вкладок
@@ -1528,15 +1314,13 @@
             document.getElementById('shop-container').style.display = 'none';
             document.getElementById('cases-container').style.display = 'none';
             document.getElementById('casino-container').style.display = 'none';
-            document.getElementById('battle-container').style.display = 'none';
-            document.getElementById('settings-container').style.display = 'none';
+            document.getElementById('inventory-container').style.display = 'none';
             document.getElementById('profile-container').style.display = 'none';
             
             document.getElementById('shop-btn').classList.remove('active');
             document.getElementById('cases-btn').classList.remove('active');
             document.getElementById('casino-btn').classList.remove('active');
-            document.getElementById('battle-btn').classList.remove('active');
-            document.getElementById('settings-btn').classList.remove('active');
+            document.getElementById('inventory-btn').classList.remove('active');
             
             if (tab === 'shop') {
                 document.getElementById('shop-container').style.display = 'block';
@@ -1544,19 +1328,33 @@
             } else if (tab === 'cases') {
                 document.getElementById('cases-container').style.display = 'block';
                 document.getElementById('cases-btn').classList.add('active');
-                updateArtifactsGrid();
             } else if (tab === 'casino') {
                 document.getElementById('casino-container').style.display = 'block';
                 document.getElementById('casino-btn').classList.add('active');
-            } else if (tab === 'battle') {
-                document.getElementById('battle-container').style.display = 'block';
-                document.getElementById('battle-btn').classList.add('active');
-            } else if (tab === 'settings') {
-                document.getElementById('settings-container').style.display = 'block';
-                document.getElementById('settings-btn').classList.add('active');
+            } else if (tab === 'inventory') {
+                document.getElementById('inventory-container').style.display = 'block';
+                document.getElementById('inventory-btn').classList.add('active');
+                updateArtifactsGrid();
             } else if (tab === 'profile') {
                 document.getElementById('profile-container').style.display = 'block';
                 updateProfile();
+            }
+        }
+        
+        // Переключение вкладок казино
+        function switchCasinoTab(tab) {
+            document.getElementById('slot-machine').style.display = 'none';
+            document.getElementById('miner-game').style.display = 'none';
+            
+            document.getElementById('slots-tab').classList.remove('active');
+            document.getElementById('miner-tab').classList.remove('active');
+            
+            if (tab === 'slots') {
+                document.getElementById('slot-machine').style.display = 'block';
+                document.getElementById('slots-tab').classList.add('active');
+            } else if (tab === 'miner') {
+                document.getElementById('miner-game').style.display = 'block';
+                document.getElementById('miner-tab').classList.add('active');
             }
         }
         
@@ -1578,7 +1376,6 @@
             if (stars < brand.price) {
                 showNotification("Недостаточно звёзд!");
                 tg.HapticFeedback.impactOccurred('light');
-                playSound('error');
                 return;
             }
             
@@ -1591,7 +1388,6 @@
             
             // Эффекты
             tg.HapticFeedback.impactOccurred('medium');
-            playSound('purchase');
             showMoneyPop(`-${brand.price}⭐️`, document.getElementById(`buy-${brandId}`));
             showNotification(`Куплен ${brand.name}! +${brand.income}⭐️/мин`);
             
@@ -1629,12 +1425,30 @@
                     saveGame();
                 }
             }, 15000); // Каждые 15 секунд
+            
+            // Пассивный доход монет
+            if (coinInterval) clearInterval(coinInterval);
+            
+            coinInterval = setInterval(() => {
+                if (totalIncome > 0) {
+                    const earnedCoins = Math.floor(totalIncome / 10); // 1/10 от дохода в минуту каждые 30 сек
+                    coins += earnedCoins;
+                    totalCoinsEarned += earnedCoins;
+                    
+                    updateUI();
+                    saveGame();
+                }
+            }, 30000);
         }
         
         // Обновление интерфейса
         function updateUI() {
             document.getElementById('balance').textContent = stars;
+            document.getElementById('coins').textContent = coins;
             document.getElementById('profile-balance').textContent = stars;
+            document.getElementById('profile-coins').textContent = coins;
+            document.getElementById('inventory-stars').textContent = stars;
+            document.getElementById('inventory-coins').textContent = coins;
             
             // Обновление магазина
             snusBrands.forEach(brand => {
@@ -1651,7 +1465,8 @@
             // Обновление кнопок
             document.getElementById('spin-button').disabled = stars < 100;
             document.getElementById('slot-button').disabled = stars < 50;
-            document.getElementById('fund-button').disabled = stars < 1000;
+            document.getElementById('exchange-button').disabled = coins < 10;
+            document.getElementById('miner-button').disabled = coins < 10;
         }
         
         // Обновление профиля
@@ -1662,27 +1477,23 @@
             document.getElementById('total-income').textContent = totalIncome;
             document.getElementById('total-artifacts').textContent = artifacts.length;
             document.getElementById('total-cases').textContent = totalCasesOpened;
-            document.getElementById('total-battles').textContent = totalBattlesWon;
-            document.getElementById('total-invested').textContent = totalInvested;
+            document.getElementById('total-coins').textContent = totalCoinsEarned;
+            document.getElementById('total-miner').textContent = totalMinerCoins;
         }
         
         // Сохранение игры
         function saveGame() {
             const gameData = {
                 stars,
+                coins,
                 totalEarned,
                 totalIncome,
                 totalCasesOpened,
-                totalBattlesWon,
-                totalInvested,
+                totalCoinsEarned,
+                totalMinerCoins,
                 snusBrands,
                 artifacts,
-                lastBonusTime,
-                lastFundTime,
-                fundAmount,
-                notificationsEnabled,
-                soundsEnabled,
-                currentTheme
+                lastBonusTime
             };
             localStorage.setItem('snusBaronSave', JSON.stringify(gameData));
         }
@@ -1693,17 +1504,13 @@
             if (savedData) {
                 const gameData = JSON.parse(savedData);
                 stars = gameData.stars || 500;
+                coins = gameData.coins || 100;
                 totalEarned = gameData.totalEarned || 0;
                 totalIncome = gameData.totalIncome || 0;
                 totalCasesOpened = gameData.totalCasesOpened || 0;
-                totalBattlesWon = gameData.totalBattlesWon || 0;
-                totalInvested = gameData.totalInvested || 0;
+                totalCoinsEarned = gameData.totalCoinsEarned || 0;
+                totalMinerCoins = gameData.totalMinerCoins || 0;
                 lastBonusTime = gameData.lastBonusTime || 0;
-                lastFundTime = gameData.lastFundTime || 0;
-                fundAmount = gameData.fundAmount || 0;
-                notificationsEnabled = gameData.notificationsEnabled !== undefined ? gameData.notificationsEnabled : true;
-                soundsEnabled = gameData.soundsEnabled !== undefined ? gameData.soundsEnabled : true;
-                currentTheme = gameData.currentTheme || 'default';
                 
                 if (gameData.snusBrands) {
                     gameData.snusBrands.forEach(savedBrand => {
@@ -1718,11 +1525,6 @@
                 if (gameData.artifacts) {
                     artifacts = gameData.artifacts;
                 }
-                
-                // Применяем сохраненные настройки
-                document.getElementById('notifications-toggle').checked = notificationsEnabled;
-                document.getElementById('sounds-toggle').checked = soundsEnabled;
-                changeTheme(currentTheme, true);
             }
             
             updateTotalIncome();
@@ -1752,7 +1554,6 @@
             if (stars < 100) {
                 showNotification("Недостаточно звёзд!");
                 tg.HapticFeedback.impactOccurred('light');
-                playSound('error');
                 return;
             }
             
@@ -1815,7 +1616,6 @@
                     
                     // Эффекты
                     tg.HapticFeedback.notificationOccurred('success');
-                    playSound('win');
                     showNotification(`Вы выиграли: ${wonArtifact.name}! ${wonArtifact.effect}`);
                     
                     // Обновляем интерфейс
@@ -1845,7 +1645,6 @@
             });
             
             totalIncome = Math.floor(baseIncome * multiplier);
-            updatePlayerPower();
         }
         
         // Обновление сетки артефактов
@@ -1880,7 +1679,6 @@
             if (stars < caseItem.price) {
                 showNotification("Недостаточно звёзд!");
                 tg.HapticFeedback.impactOccurred('light');
-                playSound('error');
                 return;
             }
             
@@ -1902,7 +1700,6 @@
                 
                 // Эффекты
                 tg.HapticFeedback.notificationOccurred('success');
-                playSound('win');
                 showNotification(`Вы получили: ${wonArtifact.name}! ${wonArtifact.effect}`);
             } else {
                 // Награда за кейс без артефакта
@@ -1911,7 +1708,6 @@
                 totalEarned += reward;
                 
                 tg.HapticFeedback.impactOccurred('medium');
-                playSound('reward');
                 showNotification(`Вы получили ${reward} ⭐️`);
             }
             
@@ -1934,12 +1730,6 @@
                 possibleArtifacts = artifactsData.filter(a => a.rarity === 'jungle');
             } else if (caseRarity === 'gold') {
                 possibleArtifacts = artifactsData.filter(a => a.rarity === 'gold');
-            } else if (caseRarity === 'dark') {
-                possibleArtifacts = artifactsData.filter(a => a.rarity === 'dark');
-            } else if (caseRarity === 'legendary') {
-                possibleArtifacts = artifactsData.filter(a => a.rarity === 'legendary');
-            } else if (caseRarity === 'mythic') {
-                possibleArtifacts = artifactsData.filter(a => a.rarity === 'mythic');
             }
             
             // Если не нашли подходящих артефактов, берем случайный
@@ -1956,7 +1746,6 @@
             if (stars < 50) {
                 showNotification("Недостаточно звёзд!");
                 tg.HapticFeedback.impactOccurred('light');
-                playSound('error');
                 return;
             }
             
@@ -2015,7 +1804,6 @@
                 
                 // Эффекты
                 tg.HapticFeedback.notificationOccurred('success');
-                playSound('win');
                 showNotification(`Победа! x${multiplier} = ${winAmount} ⭐️`);
                 
                 // Анимация победы
@@ -2030,7 +1818,6 @@
                 }, 1500);
             } else {
                 tg.HapticFeedback.impactOccurred('medium');
-                playSound('lose');
                 showNotification("Попробуйте ещё раз!");
             }
             
@@ -2083,185 +1870,147 @@
             totalEarned += bonusAmount;
             lastBonusTime = now;
             
+            // Также даем немного монет
+            const coinBonus = Math.floor(bonusAmount / 5);
+            coins += coinBonus;
+            totalCoinsEarned += coinBonus;
+            
             // Эффекты
             tg.HapticFeedback.notificationOccurred('success');
-            playSound('bonus');
-            showNotification(`Бонус получен: +${bonusAmount} ⭐️`);
+            showNotification(`Бонус получен: +${bonusAmount} ⭐️ и +${coinBonus} 🪙`);
             
             updateUI();
             updateBonusTimer();
             saveGame();
         }
         
-        // Снюс-фонд
-        function updateFundTimer() {
-            if (fundInterval) clearInterval(fundInterval);
-            
-            const fundTimer = document.getElementById('fund-timer');
-            const fundProgress = document.getElementById('fund-progress');
-            
-            const checkFund = () => {
-                const now = Date.now();
-                const timeSinceLastFund = now - lastFundTime;
-                const fundCooldown = 24 * 60 * 60 * 1000; // 24 часа
-                
-                if (fundAmount > 0) {
-                    const progress = Math.min(100, (timeSinceLastFund / fundCooldown) * 100);
-                    fundProgress.style.width = `${progress}%`;
-                    
-                    if (timeSinceLastFund >= fundCooldown) {
-                        // Выплата дивидендов
-                        const profit = Math.floor(fundAmount * 0.2); // 20% прибыли
-                        stars += profit;
-                        totalEarned += profit;
-                        lastFundTime = now;
-                        
-                        showNotification(`Вы получили ${profit} ⭐️ от инвестиций!`);
-                        updateUI();
-                        saveGame();
-                    } else {
-                        const remaining = fundCooldown - timeSinceLastFund;
-                        const hours = Math.floor(remaining / (60 * 60 * 1000));
-                        const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-                        
-                        fundTimer.textContent = `${hours}ч ${minutes}м`;
-                    }
-                } else {
-                    fundProgress.style.width = '0%';
-                    fundTimer.textContent = '24ч';
-                }
-            };
-            
-            checkFund();
-            fundInterval = setInterval(checkFund, 60000); // Проверка каждую минуту
-        }
-        
-        function investFund() {
-            if (stars < 1000) {
-                showNotification("Необходимо минимум 1000 ⭐️");
+        // Обмен валюты
+        function exchangeCoins() {
+            if (coins < 10) {
+                showNotification("Недостаточно монет!");
                 tg.HapticFeedback.impactOccurred('light');
-                playSound('error');
                 return;
             }
             
-            stars -= 1000;
-            totalEarned += 1000;
-            totalInvested += 1000;
-            fundAmount += 1000;
+            const exchangeRate = 5; // 1 монета = 5 звезд
+            const exchangeAmount = 10; // Обмениваем 10 монет
+            const starsGained = exchangeAmount * exchangeRate;
             
-            if (lastFundTime === 0) {
-                lastFundTime = Date.now();
-            }
+            coins -= exchangeAmount;
+            stars += starsGained;
+            totalEarned += starsGained;
             
             // Эффекты
             tg.HapticFeedback.impactOccurred('medium');
-            playSound('purchase');
-            showNotification("1000 ⭐️ инвестированы в фонд!");
-            
-            updateUI();
-            updateFundTimer();
-            saveGame();
-        }
-        
-        // Снюс-битва
-        function updatePlayerPower() {
-            const power = Math.floor(totalIncome * 2 + artifacts.length * 50);
-            document.getElementById('player-power').textContent = power;
-            return power;
-        }
-        
-        function startBattle(opponentId) {
-            const opponent = opponents.find(o => o.id === opponentId);
-            const playerPower = updatePlayerPower();
-            
-            // Шанс победы зависит от соотношения сил
-            let winChance = playerPower / (playerPower + opponent.power);
-            winChance = Math.min(0.9, Math.max(0.1, winChance)); // Ограничиваем шансы 10%-90%
-            
-            const isWin = Math.random() < winChance;
-            
-            if (isWin) {
-                // Победа
-                stars += opponent.reward;
-                totalEarned += opponent.reward;
-                totalBattlesWon += 1;
-                
-                tg.HapticFeedback.notificationOccurred('success');
-                playSound('win');
-                showNotification(`Победа! Вы получили ${opponent.reward} ⭐️`);
-            } else {
-                // Поражение
-                const loss = Math.floor(opponent.reward * 0.2);
-                stars = Math.max(0, stars - loss);
-                
-                tg.HapticFeedback.impactOccurred('heavy');
-                playSound('lose');
-                showNotification(`Поражение! Вы потеряли ${loss} ⭐️`);
-            }
+            showNotification(`Обменено: 10 🪙 → ${starsGained} ⭐️`);
             
             updateUI();
             saveGame();
         }
         
-        // Настройки темы
-        function changeTheme(theme, initial = false) {
-            currentTheme = theme;
-            const themeColors = themes[theme];
+        // Мини-игра "Минер"
+        function initMinerGame() {
+            const grid = document.getElementById('miner-grid');
+            grid.innerHTML = '';
             
-            document.documentElement.style.setProperty('--tg-bg', themeColors.bg);
-            document.documentElement.style.setProperty('--tg-secondary', themeColors.secondary);
-            document.documentElement.style.setProperty('--tg-button', themeColors.button);
-            
-            // Обновляем выбранную тему в настройках
-            if (!initial) {
-                document.querySelectorAll('.theme-option').forEach(option => {
-                    option.classList.remove('selected');
-                    if (option.dataset.theme === theme) {
-                        option.classList.add('selected');
-                    }
-                });
-                
-                showNotification(`Тема "${theme}" применена`);
-                saveGame();
+            // Создаем поле 5x5
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'miner-cell';
+                cell.dataset.index = i;
+                cell.addEventListener('click', () => revealMinerCell(i));
+                grid.appendChild(cell);
             }
         }
         
-        // Сброс прогресса
-        function resetProgress() {
-            if (!confirm("Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.")) {
+        let minerGameActive = false;
+        let minerCoinsLeft = 5;
+        let minerWinAmount = 0;
+        let minerBombIndex = -1;
+        
+        function startMinerGame() {
+            if (coins < 10) {
+                showNotification("Недостаточно монет!");
+                tg.HapticFeedback.impactOccurred('light');
                 return;
             }
             
-            // Сбрасываем все данные
-            stars = 500;
-            totalEarned = 0;
-            totalIncome = 0;
-            totalCasesOpened = 0;
-            totalBattlesWon = 0;
-            totalInvested = 0;
-            artifacts = [];
-            lastBonusTime = 0;
-            lastFundTime = 0;
-            fundAmount = 0;
+            if (minerGameActive) return;
             
-            // Сбрасываем снюс
-            snusBrands.forEach(brand => {
-                brand.owned = 0;
-                brand.price = brand.price; // Возвращаем исходную цену
-            });
+            coins -= 10;
+            minerGameActive = true;
+            minerCoinsLeft = 5;
+            minerWinAmount = 0;
+            
+            // Выбираем случайную ячейку для бомбы
+            minerBombIndex = Math.floor(Math.random() * 25);
             
             // Обновляем интерфейс
-            updateTotalIncome();
+            document.getElementById('miner-remaining').textContent = minerCoinsLeft;
+            document.getElementById('miner-win').textContent = minerWinAmount;
+            document.getElementById('miner-button').textContent = "Игра идет...";
+            document.getElementById('miner-button').disabled = true;
+            
+            // Очищаем поле
+            const cells = document.querySelectorAll('.miner-cell');
+            cells.forEach(cell => {
+                cell.className = 'miner-cell';
+                cell.textContent = '';
+            });
+            
             updateUI();
-            updateArtifactsGrid();
-            updateBonusTimer();
-            updateFundTimer();
-            updatePlayerPower();
-            
-            // Сохраняем
             saveGame();
+        }
+        
+        function revealMinerCell(index) {
+            if (!minerGameActive) return;
             
-            showNotification("Прогресс сброшен!");
+            const cell = document.querySelector(`.miner-cell[data-index="${index}"]`);
+            if (cell.classList.contains('revealed')) return;
+            
+            if (index === minerBombIndex) {
+                // Нашли бомбу - игра окончена
+                cell.className = 'miner-cell bomb';
+                cell.innerHTML = '<i class="fas fa-bomb"></i>';
+                minerGameActive = false;
+                
+                tg.HapticFeedback.notificationOccurred('error');
+                showNotification(`Игра окончена! Вы заработали ${minerWinAmount} ⭐️`);
+                
+                document.getElementById('miner-button').textContent = "Играть за 10 🪙";
+                document.getElementById('miner-button').disabled = coins < 10;
+            } else {
+                // Нашли монету
+                minerCoinsLeft--;
+                minerWinAmount += 10;
+                totalMinerCoins++;
+                
+                cell.className = 'miner-cell coin';
+                cell.innerHTML = '<i class="fas fa-coins"></i>';
+                
+                document.getElementById('miner-remaining').textContent = minerCoinsLeft;
+                document.getElementById('miner-win').textContent = minerWinAmount;
+                
+                tg.HapticFeedback.impactOccurred('light');
+                
+                if (minerCoinsLeft === 0) {
+                    // Нашли все монеты - победа
+                    minerGameActive = false;
+                    stars += minerWinAmount;
+                    totalEarned += minerWinAmount;
+                    
+                    tg.HapticFeedback.notificationOccurred('success');
+                    showNotification(`Победа! +${minerWinAmount} ⭐️`);
+                    
+                    document.getElementById('miner-button').textContent = "Играть за 10 🪙";
+                    document.getElementById('miner-button').disabled = coins < 10;
+                    
+                    updateUI();
+                }
+            }
+            
+            cell.classList.add('revealed');
+            saveGame();
         }
         
         // Автосохранение
