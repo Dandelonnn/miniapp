@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Угадай вид спорта по мячу</title>
+    <title>TriviaSpin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Dela Gothic One';
-            src: url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
-        }
-        
         body {
-            font-family: 'Dela Gothic One', Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Dela Gothic One', sans-serif;
+            background: #f5f5f5;
             margin: 0;
             padding: 0;
             display: flex;
@@ -21,154 +17,115 @@
             height: 100vh;
             color: #333;
         }
-        
         .game-container {
             width: 320px;
-            background-color: white;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-        
         /* Главное меню */
         .main-menu {
             padding: 20px;
         }
-        
-        .menu-header {
+        .progress {
             text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .progress-info {
-            font-size: 14px;
             color: #666;
-            text-align: center;
+            font-size: 14px;
             margin-bottom: 20px;
         }
-        
-        .levels-grid {
+        .levels {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
-        
-        .level-card {
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            padding: 12px;
+        .level {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        
-        .level-card:hover {
-            background-color: #f0f0f0;
-            transform: translateY(-2px);
-        }
-        
         .level-number {
             font-size: 24px;
-            font-weight: bold;
             color: #4285F4;
-            margin-bottom: 4px;
         }
-        
-        .level-difficulty {
+        .level-diff {
             font-size: 12px;
-            color: #666;
+            color: #888;
         }
-        
-        .start-button {
+        .start-btn {
             width: 100%;
-            padding: 14px;
-            background-color: #4285F4;
+            padding: 15px;
+            background: #4285F4;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-family: 'Dela Gothic One', Arial, sans-serif;
+            border-radius: 10px;
+            font-family: 'Dela Gothic One';
             font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
         }
-        
-        .ad-banner {
-            background-color: #f1f1f1;
-            border-radius: 12px;
-            padding: 12px;
+        .ad {
+            background: #f1f1f1;
+            border-radius: 10px;
+            padding: 10px;
             margin-top: 20px;
             text-align: center;
             font-size: 12px;
         }
-        
-        .ad-title {
-            color: #4285F4;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        
         /* Игровой уровень */
-        .game-level {
+        .game-screen {
             display: none;
             padding: 20px;
         }
-        
-        .level-header {
-            font-size: 20px;
+        .level-title {
             text-align: center;
+            font-size: 20px;
             margin-bottom: 10px;
         }
-        
         .question {
-            font-size: 16px;
             text-align: center;
             margin-bottom: 20px;
         }
-        
-        .ball-container {
+        .ball {
             width: 120px;
             height: 120px;
-            margin: 0 auto 20px;
-            background-color: #f0f0f0;
+            background: #f0f0f0;
             border-radius: 50%;
+            margin: 0 auto 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 60px;
         }
-        
-        .options-wheel {
+        .wheel {
             height: 50px;
-            margin: 0 auto 20px;
             position: relative;
+            margin: 0 auto 20px;
             overflow: hidden;
             width: 280px;
         }
-        
-        .wheel-track {
+        .options {
             display: flex;
             position: absolute;
             left: 0;
             top: 0;
-            height: 100%;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.3s ease;
         }
-        
-        .wheel-option {
-            height: 50px;
+        .option {
             min-width: 100px;
-            padding: 0 20px;
+            height: 50px;
+            margin-right: 10px;
+            background: white;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: white;
-            border-radius: 25px;
-            margin-right: 10px;
+            padding: 0 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             font-size: 14px;
         }
-        
         .wheel-center {
             position: absolute;
             left: 50%;
@@ -176,41 +133,25 @@
             transform: translateX(-50%);
             width: 100px;
             height: 50px;
-            background-color: #4285F4;
+            background: #4285F4;
             border-radius: 25px;
-            z-index: 2;
-            pointer-events: none;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            pointer-events: none;
+            z-index: 2;
         }
-        
-        .submit-button {
+        .submit-btn {
             width: 100%;
-            padding: 14px;
-            background-color: #EA4335;
+            padding: 15px;
+            background: #EA4335;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-family: 'Dela Gothic One', Arial, sans-serif;
+            border-radius: 10px;
+            font-family: 'Dela Gothic One';
             font-size: 16px;
             cursor: pointer;
-        }
-        
-        .level-ad {
-            background-color: #f1f1f1;
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 12px;
-        }
-        
-        .ad-label {
-            color: #666;
-            margin-bottom: 4px;
         }
     </style>
 </head>
@@ -218,228 +159,196 @@
     <div class="game-container">
         <!-- Главное меню -->
         <div class="main-menu" id="mainMenu">
-            <div class="menu-header">
-                <div class="progress-info">0/3 уровней</div>
-                <h2>Дневная серия</h2>
-            </div>
-            
-            <div class="levels-grid">
-                <div class="level-card" data-level="1">
+            <div class="progress">0/3 уровней</div>
+            <div class="levels">
+                <div class="level" data-level="1">
                     <div class="level-number">1</div>
-                    <div class="level-difficulty">Ур 1</div>
+                    <div class="level-diff">Дневная серия</div>
                 </div>
-                <div class="level-card" data-level="6">
+                <div class="level" data-level="6">
                     <div class="level-number">6</div>
-                    <div class="level-difficulty">Ур 4</div>
+                    <div class="level-diff">Ур 4</div>
                 </div>
-                <div class="level-card" data-level="8">
+                <div class="level" data-level="8">
                     <div class="level-number">8</div>
-                    <div class="level-difficulty">Ур 7</div>
+                    <div class="level-diff">Ур 7</div>
                 </div>
-                <div class="level-card" data-level="9">
+                <div class="level" data-level="9">
                     <div class="level-number">9</div>
-                    <div class="level-difficulty">Ур 35</div>
-                </div>
-                <div class="level-card" data-level="10">
-                    <div class="level-number">10</div>
-                    <div class="level-difficulty">Ур 43</div>
+                    <div class="level-diff">Ур 35</div>
                 </div>
             </div>
-            
-            <button class="start-button" id="startButton">Старт</button>
-            
-            <div class="ad-banner">
-                <div class="ad-title">Яндекс Еда</div>
-                <div>быстрая доставка от 30 минут</div>
+            <button class="start-btn" id="startBtn">Старт</button>
+            <div class="ad">
+                Яндекс Еда<br>
+                быстрая доставка от 30 минут
             </div>
         </div>
         
-        <!-- Игровой уровень -->
-        <div class="game-level" id="gameLevel">
-            <div class="level-header">УРОВЕНЬ 1</div>
+        <!-- Игровой экран -->
+        <div class="game-screen" id="gameScreen">
+            <div class="level-title">УРОВЕНЬ 1</div>
             <div class="question">Где используется этот мяч?</div>
-            
-            <div class="ball-container" id="ballContainer">⚾</div>
-            
-            <div class="options-wheel">
-                <div class="wheel-track" id="wheelTrack"></div>
-                <div class="wheel-center" id="wheelCenter">Бейсбол</div>
+            <div class="ball" id="ball">⚾</div>
+            <div class="wheel">
+                <div class="options" id="options"></div>
+                <div class="wheel-center" id="selectedOption">Бейсбол</div>
             </div>
-            
-            <button class="submit-button" id="submitButton">Ответить</button>
-            
-            <div class="level-ad">
-                <div class="ad-label">ADS ON</div>
-                <div>Яндекс Еда</div>
-                <div>быстрая доставка от 30 минут</div>
+            <button class="submit-btn" id="submitBtn">Ответить</button>
+            <div class="ad">
+                ADS ON<br>
+                Яндекс Еда — быстрая доставка
             </div>
         </div>
     </div>
 
     <script>
-        // Данные для игры
-        const gameData = {
+        // Данные игры
+        const levels = {
             1: {
-                ball: '⚾',
-                question: 'Где используется этот мяч?',
-                options: ['Бейсбол', 'Волейбол', 'Гольф', 'Теннис', 'Баскетбол', 'Боулинг'],
-                correctAnswer: 'Бейсбол'
+                ball: "⚾",
+                question: "Где используется этот мяч?",
+                options: ["Бейсбол", "Волейбол", "Гольф", "Теннис", "Баскетбол", "Боулинг"],
+                answer: "Бейсбол"
             },
             6: {
-                ball: '🏀',
-                question: 'Где используется этот мяч?',
-                options: ['Футбол', 'Волейбол', 'Гольф', 'Теннис', 'Баскетбол', 'Регби'],
-                correctAnswer: 'Баскетбол'
+                ball: "🏀",
+                question: "Где используется этот мяч?",
+                options: ["Футбол", "Волейбол", "Гольф", "Теннис", "Баскетбол", "Регби"],
+                answer: "Баскетбол"
             },
             8: {
-                ball: '🎾',
-                question: 'Где используется этот мяч?',
-                options: ['Бейсбол', 'Волейбол', 'Гольф', 'Теннис', 'Баскетбол', 'Бадминтон'],
-                correctAnswer: 'Теннис'
+                ball: "🎾",
+                question: "Где используется этот мяч?",
+                options: ["Бейсбол", "Волейбол", "Гольф", "Теннис", "Баскетбол", "Бадминтон"],
+                answer: "Теннис"
             },
             9: {
-                ball: '⚽',
-                question: 'Где используется этот мяч?',
-                options: ['Футбол', 'Волейбол', 'Гандбол', 'Теннис', 'Баскетбол', 'Регби'],
-                correctAnswer: 'Футбол'
-            },
-            10: {
-                ball: '🎳',
-                question: 'Где используется этот мяч?',
-                options: ['Бейсбол', 'Волейбол', 'Гольф', 'Боулинг', 'Баскетбол', 'Крикет'],
-                correctAnswer: 'Боулинг'
+                ball: "⚽",
+                question: "Где используется этот мяч?",
+                options: ["Футбол", "Волейбол", "Гандбол", "Теннис", "Баскетбол", "Регби"],
+                answer: "Футбол"
             }
         };
 
-        // Элементы DOM
-        const mainMenu = document.getElementById('mainMenu');
-        const gameLevel = document.getElementById('gameLevel');
-        const startButton = document.getElementById('startButton');
-        const levelCards = document.querySelectorAll('.level-card');
-        const ballContainer = document.getElementById('ballContainer');
-        const questionElement = document.querySelector('.question');
-        const wheelTrack = document.getElementById('wheelTrack');
-        const wheelCenter = document.getElementById('wheelCenter');
-        const submitButton = document.getElementById('submitButton');
-        const progressInfo = document.querySelector('.progress-info');
-        const levelHeader = document.querySelector('.level-header');
+        // Элементы
+        const mainMenu = document.getElementById("mainMenu");
+        const gameScreen = document.getElementById("gameScreen");
+        const startBtn = document.getElementById("startBtn");
+        const levelButtons = document.querySelectorAll(".level");
+        const ball = document.getElementById("ball");
+        const question = document.querySelector(".question");
+        const options = document.getElementById("options");
+        const selectedOption = document.getElementById("selectedOption");
+        const submitBtn = document.getElementById("submitBtn");
+        const progress = document.querySelector(".progress");
 
-        // Переменные игры
+        // Переменные
         let currentLevel = 1;
-        let selectedAnswer = '';
         let isDragging = false;
         let startX, scrollLeft;
-        let completedLevels = 0;
+        let completed = 0;
 
-        // Инициализация колеса ответов
-        function initWheel(level) {
-            wheelTrack.innerHTML = '';
-            const options = gameData[level].options;
+        // Инициализация колеса
+        function initWheel() {
+            options.innerHTML = "";
+            const levelData = levels[currentLevel];
             
-            // Добавляем дополнительные элементы для бесконечного скролла
+            // Добавляем варианты (3 копии для бесконечного скролла)
             for (let i = 0; i < 3; i++) {
-                options.forEach(option => {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'wheel-option';
-                    optionElement.textContent = option;
-                    wheelTrack.appendChild(optionElement);
+                levelData.options.forEach(opt => {
+                    const div = document.createElement("div");
+                    div.className = "option";
+                    div.textContent = opt;
+                    options.appendChild(div);
                 });
             }
             
             // Центрируем правильный ответ
-            centerOption(options.indexOf(gameData[level].correctAnswer));
+            centerOption(levelData.options.indexOf(levelData.answer));
         }
 
         // Центрирование выбранного варианта
         function centerOption(index) {
-            const options = gameData[currentLevel].options;
-            const optionWidth = 100 + 10; // Ширина + margin
-            const centerPosition = index * optionWidth + (optionWidth / 2) - (280 / 2);
-            
-            wheelTrack.style.transform = `translateX(-${centerPosition}px)`;
-            selectedAnswer = options[index];
-            wheelCenter.textContent = selectedAnswer;
+            const optionWidth = 100 + 10; // Ширина + отступ
+            const centerPos = index * optionWidth + (optionWidth / 2) - 140;
+            options.style.transform = `translateX(-${centerPos}px)`;
+            selectedOption.textContent = levels[currentLevel].options[index];
         }
-
-        // Обработчики событий для колеса
-        wheelTrack.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.pageX;
-            scrollLeft = parseInt(wheelTrack.style.transform?.replace('translateX(-', '').replace('px)', '') || 0;
-            document.body.style.cursor = 'grabbing';
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            
-            const x = e.pageX;
-            const walk = (x - startX) * 2;
-            wheelTrack.style.transform = `translateX(-${scrollLeft - walk}px)`;
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            document.body.style.cursor = '';
-            
-            // После перетаскивания находим ближайший вариант и центрируем его
-            const options = gameData[currentLevel].options;
-            const optionWidth = 100 + 10;
-            const currentPosition = parseInt(wheelTrack.style.transform?.replace('translateX(-', '').replace('px)', '') || 0;
-            const centerIndex = Math.round((currentPosition + (280 / 2)) / optionWidth) % options.length;
-            
-            centerOption(centerIndex);
-        });
 
         // Загрузка уровня
         function loadLevel(level) {
             currentLevel = level;
-            levelHeader.textContent = `УРОВЕНЬ ${level}`;
-            ballContainer.textContent = gameData[level].ball;
-            questionElement.textContent = gameData[level].question;
-            initWheel(level);
+            const levelData = levels[level];
             
-            // Показываем игровой уровень
-            mainMenu.style.display = 'none';
-            gameLevel.style.display = 'block';
-        }
-
-        // Проверка ответа
-        function checkAnswer() {
-            const correctAnswer = gameData[currentLevel].correctAnswer;
+            document.querySelector(".level-title").textContent = `УРОВЕНЬ ${level}`;
+            ball.textContent = levelData.ball;
+            question.textContent = levelData.question;
             
-            if (selectedAnswer === correctAnswer) {
-                alert(`Правильно! Это ${correctAnswer}`);
-                completedLevels++;
-                progressInfo.textContent = `${completedLevels}/3 уровней`;
-                
-                // Если пройдено 3 уровня, возвращаемся в меню
-                if (completedLevels >= 3) {
-                    setTimeout(() => {
-                        gameLevel.style.display = 'none';
-                        mainMenu.style.display = 'block';
-                        completedLevels = 0;
-                        progressInfo.textContent = '0/3 уровней';
-                    }, 1000);
-                }
-            } else {
-                alert(`Неправильно! Правильный ответ: ${correctAnswer}`);
-            }
+            initWheel();
+            
+            mainMenu.style.display = "none";
+            gameScreen.style.display = "block";
         }
 
         // Обработчики событий
-        levelCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const level = parseInt(card.dataset.level);
-                loadLevel(level);
+        levelButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                loadLevel(parseInt(btn.dataset.level));
             });
         });
 
-        submitButton.addEventListener('click', checkAnswer);
+        startBtn.addEventListener("click", () => loadLevel(1));
 
-        // Начало игры (по умолчанию загружаем первый уровень)
-        startButton.addEventListener('click', () => {
-            loadLevel(1);
+        // Перетаскивание колеса
+        options.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            startX = e.pageX;
+            scrollLeft = parseInt(options.style.transform.replace("translateX(-", "").replace("px)", "")) || 0;
+            document.body.style.cursor = "grabbing";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            const x = e.pageX;
+            const walk = (x - startX) * 2;
+            options.style.transform = `translateX(-${scrollLeft - walk}px)`;
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (!isDragging) return;
+            isDragging = false;
+            document.body.style.cursor = "";
+            
+            // Находим ближайший вариант
+            const optionWidth = 100 + 10;
+            const currentPos = parseInt(options.style.transform.replace("translateX(-", "").replace("px)", "")) || 0;
+            const centerIndex = Math.round((currentPos + 140) / optionWidth) % levels[currentLevel].options.length;
+            
+            centerOption(centerIndex);
+        });
+
+        // Проверка ответа
+        submitBtn.addEventListener("click", () => {
+            const correct = levels[currentLevel].answer;
+            const selected = selectedOption.textContent;
+            
+            if (selected === correct) {
+                alert(`Правильно! Это ${correct}`);
+                completed++;
+                progress.textContent = `${completed}/3 уровней`;
+                
+                if (completed >= 3) {
+                    setTimeout(() => {
+                        gameScreen.style.display = "none";
+                        mainMenu.style.display = "block";
+                        completed = 0;
+                        progress.textContent = "0/3 уровней";
+                    }, 1000);
+                }
+            } else {
+                alert(`Неправильно! Правильный ответ: ${correct}`);
+            }
         });
     </script>
 </body>
