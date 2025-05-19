@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лесная Игра</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
         
         body {
-            font-family: 'Rubik', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #ffffff;
             margin: 0;
             padding: 15px;
@@ -58,7 +58,7 @@
             background-color: white;
             padding: 10px 20px;
             border-radius: 20px;
-            margin: 10px 0 20px 0;
+            margin: 30px 0 40px 0; /* Увеличено расстояние сверху */
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             position: absolute;
             top: 15px;
@@ -82,14 +82,14 @@
             color: white;
             padding: 8px 20px;
             border-radius: 30px;
-            margin: 60px 0 20px 0;
+            margin: 80px 0 30px 0; /* Увеличено расстояние */
             box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
             text-align: center;
         }
         
         .character {
-            width: 180px;
-            height: 180px;
+            width: 220px; /* Увеличен размер */
+            height: 220px;
             background-color: #f0f0f0;
             border-radius: 25px;
             margin: 20px 0;
@@ -100,21 +100,20 @@
         }
         
         .play-btn {
-            background-color: #27ae60; /* Зелёный цвет */
+            background-color: #27ae60;
             color: white;
             border: none;
-            padding: 18px 70px;
+            padding: 14px 50px; /* Уменьшен размер */
             border-radius: 30px;
-            font-family: 'Rubik', sans-serif;
-            font-weight: 700;
-            font-size: 22px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 18px; /* Уменьшен размер шрифта */
             cursor: pointer;
             box-shadow: 0 6px 12px rgba(39, 174, 96, 0.4);
-            margin: 25px 0 15px;
+            margin: 15px 0 10px; /* Изменены отступы */
             width: 80%;
-            max-width: 300px;
+            max-width: 250px;
             transition: transform 0.2s;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
         
         .play-btn:active {
@@ -122,18 +121,10 @@
         }
         
         .level-info {
-            font-size: 14px;
-            color: #7f8c8d; /* Серый цвет */
-            margin: 10px 0;
+            font-size: 12px; /* Уменьшен в 2 раза (18px/2) */
+            color: #7f8c8d;
+            margin: 5px 0 20px;
             text-align: center;
-            position: relative;
-        }
-        
-        .level-info:before,
-        .level-info:after {
-            content: "---";
-            margin: 0 10px;
-            color: #bdc3c7;
         }
     </style>
 </head>
@@ -156,8 +147,8 @@
     
     <div class="character"></div>
     
-    <button class="play-btn">ИГРАТЬ</button>
-    
     <div class="level-info">1 Уровень</div>
+    
+    <button class="play-btn">ИГРАТЬ</button>
 </body>
 </html>
