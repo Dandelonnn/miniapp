@@ -27,27 +27,16 @@
         }
         
         .quests {
+            width: 40px;
+            height: 40px;
             background-color: #e67e22;
             color: white;
-            border-radius: 12px 12px 0 0;
-            padding: 10px 15px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
             font-size: 14px;
-            position: relative;
-            margin-top: 30px;
-        }
-        
-        .quests:after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 15px solid #e67e22;
         }
         
         .settings {
@@ -153,7 +142,7 @@
     </div>
     
     <div class="header">
-        <div class="quests">Квесты</div>
+        <div class="quests">?</div>
         <div class="settings">⚙️</div>
     </div>
     
