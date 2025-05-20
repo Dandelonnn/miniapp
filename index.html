@@ -24,7 +24,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px; /* Увеличен отступ снизу */
+            margin-bottom: 40px;
         }
         
         .quests {
@@ -41,21 +41,27 @@
         }
         
         .settings {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background-color: white;
-            color: #5c3a21;
             border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            font-size: 18px;
+            overflow: hidden;
+            border: 2px solid #e67e22;
+        }
+        
+        .settings img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
         
         .stats-center {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -64,33 +70,62 @@
         .hearts, .coins {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             color: #000000;
-            font-size: 16px;
+            font-size: 18px;
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 2px solid #e67e22;
         }
         
-        .day-series {
-            background-color: #e67e22;
+        .hearts img, .coins img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        
+        .daily-series-cloud {
+            position: relative;
+            width: 300px;
+            min-height: 100px;
+            margin: 40px 0;
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            border-radius: 50px;
+            box-shadow: 0 8px 16px rgba(142, 68, 173, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 30px;
             color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
+            font-size: 20px;
             text-align: center;
-            font-size: 16px;
-            margin-top: 30px; /* Добавлен отступ сверху */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .daily-series-cloud:before {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid #8e44ad;
         }
         
         .character {
             width: 280px;
             height: 280px;
-            background-color: #f0f0f0;
-            border-radius: 25px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            background-image: url('https://i.imgur.com/placeholder.png');
+            margin: 20px 0 40px 0;
             background-size: cover;
             background-position: center;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 3px solid #e67e22;
         }
         
         .game-controls {
@@ -119,6 +154,7 @@
             cursor: pointer;
             box-shadow: 0 6px 12px rgba(39, 174, 96, 0.4);
             transition: transform 0.2s;
+            border: 2px solid #1e8449;
         }
         
         .play-btn:active {
@@ -131,18 +167,26 @@
         <div class="quests">?</div>
         <div class="stats-center">
             <div class="hearts">
-                <span>❤️ 5/5</span>
+                <img src="https://cdn.discordapp.com/attachments/1335587076120248350/1374411699989516298/47537b64e111795a.png?ex=682df424&is=682ca2a4&hm=aca2bc10361154f7a40389197f2dbd6bc67f8cbfafc033fe80474c9d6e66ebfc&" alt="❤️">
+                <span>5/5</span>
             </div>
             <div class="coins">
-                <span>💰 100</span>
+                <img src="https://cdn.discordapp.com/attachments/1335587076120248350/1374435289858052288/d32a54b02e0a22e1.png?ex=682e0a1c&is=682cb89c&hm=34afd22c3cc2b6c3065fe0294cab8a0b5c6393ea602bf1e0848b8ea2995e5e40&" alt="💰">
+                <span>100</span>
             </div>
         </div>
-        <div class="settings">⚙️</div>
+        <div class="settings">
+            <img src="https://cdn.discordapp.com/attachments/1335587076120248350/1374411699683328151/07ce19c26b1236e9.png?ex=682df424&is=682ca2a4&hm=081874accb884f39c0a923446c61169a402e0e4ab522bbdf7e0dcf97f5497583&" alt="Настройки">
+        </div>
     </div>
     
-    <div class="day-series">Дневная серия: 3 дня</div>
+    <!-- Фиолетово-белое облако дневной серии -->
+    <div class="daily-series-cloud">
+        Дневная серия: 3 дня
+    </div>
     
-    <div class="character"></div>
+    <!-- Персонаж -->
+    <div class="character" style="background-image: url('https://cdn.discordapp.com/attachments/1335587076120248350/1374411699339264051/9f45a80126534416.jpg?ex=682df424&is=682ca2a4&hm=891d48939d2de92b722d02fc85a88c912138eacc747b60797bf3ed4f31bf0029&')"></div>
     
     <div class="game-controls">
         <div class="level-info">1 Уровень</div>
