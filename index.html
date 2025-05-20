@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Simulator</title>
+    <title>Petopia</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,6 +122,11 @@
             cursor: pointer;
         }
         
+        .currency-container {
+            display: flex;
+            gap: 10px;
+        }
+        
         .currency {
             display: flex;
             align-items: center;
@@ -133,9 +138,16 @@
         }
         
         .currency-icon {
-            color: var(--warning);
             margin-right: 5px;
             font-size: 18px;
+        }
+        
+        .coins-icon {
+            color: var(--warning);
+        }
+        
+        .shards-icon {
+            color: var(--primary);
         }
         
         /* Карточки питомцев */
@@ -147,6 +159,19 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             position: relative;
             overflow: hidden;
+        }
+        
+        .no-pets-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        .no-pets-message i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--secondary);
         }
         
         .pet-header {
@@ -367,6 +392,10 @@
             color: var(--primary);
         }
         
+        .shop-item-price.coins {
+            color: var(--warning);
+        }
+        
         .buy-btn {
             background: var(--bg-gradient);
             color: white;
@@ -376,6 +405,10 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+        }
+        
+        .buy-btn.coins {
+            background: linear-gradient(135deg, var(--warning) 0%, #E17055 100%);
         }
         
         .buy-btn:hover {
@@ -654,13 +687,25 @@
         .pet-icon.fish {
             background: linear-gradient(135deg, #6C5CE7 0%, #FD79A8 100%);
         }
+        
+        .pet-icon.rabbit {
+            background: linear-gradient(135deg, #FD79A8 0%, #A29BFE 100%);
+        }
+        
+        .pet-icon.turtle {
+            background: linear-gradient(135deg, #00B894 0%, #2D3436 100%);
+        }
+        
+        .pet-icon.ferret {
+            background: linear-gradient(135deg, #2D3436 0%, #636E72 100%);
+        }
     </style>
 </head>
 <body>
     <!-- Экран загрузки -->
     <div class="loader-container" id="loader">
         <div class="loader"></div>
-        <div class="loader-text">Pet Simulator</div>
+        <div class="loader-text">Petopia</div>
         <div class="loader-progress">
             <div class="loader-progress-bar" id="loader-progress"></div>
         </div>
@@ -669,10 +714,16 @@
     <!-- Основной интерфейс -->
     <div class="container" id="app" style="display: none;">
         <div class="header">
-            <div class="header-title">Pet Sim</div>
-            <div class="currency">
-                <i class="fas fa-coins currency-icon"></i>
-                <span id="money">1000</span> ₽
+            <div class="header-title">Petopia</div>
+            <div class="currency-container">
+                <div class="currency">
+                    <i class="fas fa-coins currency-icon coins-icon"></i>
+                    <span id="coins">1000</span>
+                </div>
+                <div class="currency">
+                    <i class="fas fa-gem currency-icon shards-icon"></i>
+                    <span id="shards">50</span>
+                </div>
             </div>
             <button class="settings-btn" id="settings-btn">
                 <i class="fas fa-cog"></i>
@@ -707,7 +758,7 @@
                 <h3 id="current-house">Маленькая квартира</h3>
                 <p>Уровень: <span id="house-level">1</span></p>
                 <p>Мест для питомцев: <span id="pet-spots-count">2</span></p>
-                <button class="upgrade-btn" onclick="upgradeHouse()">Улучшить за <span id="upgrade-cost">1000</span> ₽</button>
+                <button class="upgrade-btn" onclick="upgradeHouse()">Улучшить за <span id="upgrade-cost">1000</span> <i class="fas fa-coins"></i></button>
             </div>
             
             <h3>Места для питомцев</h3>
@@ -717,14 +768,14 @@
         <div id="games" class="tab-content">
             <div class="mini-game">
                 <h4 class="game-title">Кликер</h4>
-                <p>Кликайте на кнопку, чтобы зарабатывать деньги</p>
+                <p>Кликайте на кнопку, чтобы зарабатывать монеты</p>
                 <button class="clicker-btn" onclick="clickerGame()">КЛИКАЙ!</button>
-                <p>Заработано: <span id="clicker-counter">0</span> ₽</p>
+                <p>Заработано: <span id="clicker-counter">0</span> <i class="fas fa-coins"></i></p>
             </div>
             
             <div class="mini-game">
                 <h4 class="game-title">Угадай цвет</h4>
-                <p>Выберите правильный цвет, чтобы выиграть 100 ₽</p>
+                <p>Выберите правильный цвет, чтобы выиграть 100 монет</p>
                 <div class="color-options">
                     <button class="color-btn" style="background-color: #E17055;" onclick="guessColor('red')"></button>
                     <button class="color-btn" style="background-color: #00B894;" onclick="guessColor('green')"></button>
@@ -874,11 +925,18 @@
         
         // Игровые данные
         let gameData = {
-            money: 1000,
+            coins: 1000,
+            shards: 50,
             pets: [],
             inventory: {
-                dog_food: 2,
-                cat_food: 2,
+                dog_food: 0,
+                cat_food: 0,
+                hamster_food: 0,
+                parrot_food: 0,
+                fish_food: 0,
+                rabbit_food: 0,
+                turtle_food: 0,
+                ferret_food: 0,
                 toy: 2,
                 medicine: 1
             },
@@ -896,19 +954,31 @@
         
         // Магазин животных
         const animalsShop = [
-            { type: 'dog', age: 'puppy', name: 'Щенок', price: 500, icon: 'dog' },
-            { type: 'cat', age: 'kitten', name: 'Котенок', price: 400, icon: 'cat' },
-            { type: 'hamster', age: 'young', name: 'Хомяк', price: 200, icon: 'hamster' },
-            { type: 'parrot', age: 'young', name: 'Попугай', price: 300, icon: 'kiwi-bird' },
-            { type: 'fish', age: 'young', name: 'Рыбка', price: 150, icon: 'fish' }
+            // Питомцы за монеты
+            { type: 'dog', age: 'puppy', name: 'Щенок', price: 500, currency: 'coins', icon: 'dog', income: 5 },
+            { type: 'cat', age: 'kitten', name: 'Котенок', price: 400, currency: 'coins', icon: 'cat', income: 4 },
+            { type: 'hamster', age: 'young', name: 'Хомяк', price: 200, currency: 'coins', icon: 'hamster', income: 2 },
+            { type: 'fish', age: 'young', name: 'Рыбка', price: 150, currency: 'coins', icon: 'fish', income: 1 },
+            { type: 'rabbit', age: 'young', name: 'Кролик', price: 300, currency: 'coins', icon: 'rabbit', income: 3 },
+            
+            // Питомцы за шарды (премиум)
+            { type: 'parrot', age: 'young', name: 'Попугай', price: 100, currency: 'shards', icon: 'kiwi-bird', income: 10 },
+            { type: 'turtle', age: 'young', name: 'Черепаха', price: 150, currency: 'shards', icon: 'turtle', income: 15 },
+            { type: 'ferret', age: 'young', name: 'Хорек', price: 200, currency: 'shards', icon: 'ferret', income: 20 }
         ];
         
         // Магазин предметов
         const itemsShop = [
-            { id: 'dog_food', name: 'Корм для собак', price: 50, icon: 'bone' },
-            { id: 'cat_food', name: 'Корм для кошек', price: 40, icon: 'fish' },
-            { id: 'toy', name: 'Игрушка', price: 30, icon: 'baseball-ball' },
-            { id: 'medicine', name: 'Аптечка', price: 100, icon: 'briefcase-medical' }
+            { id: 'dog_food', name: 'Корм для собак', price: 50, currency: 'coins', icon: 'bone' },
+            { id: 'cat_food', name: 'Корм для кошек', price: 40, currency: 'coins', icon: 'fish' },
+            { id: 'hamster_food', name: 'Корм для хомяков', price: 20, currency: 'coins', icon: 'seedling' },
+            { id: 'parrot_food', name: 'Корм для попугаев', price: 60, currency: 'coins', icon: 'seedling' },
+            { id: 'fish_food', name: 'Корм для рыбок', price: 15, currency: 'coins', icon: 'fish' },
+            { id: 'rabbit_food', name: 'Корм для кроликов', price: 30, currency: 'coins', icon: 'carrot' },
+            { id: 'turtle_food', name: 'Корм для черепах', price: 70, currency: 'coins', icon: 'leaf' },
+            { id: 'ferret_food', name: 'Корм для хорьков', price: 80, currency: 'coins', icon: 'drumstick-bite' },
+            { id: 'toy', name: 'Игрушка', price: 30, currency: 'coins', icon: 'baseball-ball' },
+            { id: 'medicine', name: 'Аптечка', price: 100, currency: 'coins', icon: 'briefcase-medical' }
         ];
         
         // Симуляция загрузки
@@ -939,7 +1009,7 @@
         
         // Загрузка сохраненных данных
         function loadGame() {
-            const savedData = localStorage.getItem('petSimulatorData');
+            const savedData = localStorage.getItem('petopiaData');
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
                 
@@ -991,7 +1061,7 @@
         // Сохранение игры
         function saveGame() {
             gameData.lastPlayed = Date.now();
-            localStorage.setItem('petSimulatorData', JSON.stringify(gameData));
+            localStorage.setItem('petopiaData', JSON.stringify(gameData));
         }
         
         // Основной игровой цикл
@@ -1027,19 +1097,15 @@
                     }
                 });
                 
-                // Добавление баллов за содержание
-                if (Math.random() < 0.1) {
-                    gameData.pets.forEach(pet => {
-                        if (pet.isAlive) {
-                            const points = getPetPoints(pet.type);
-                            gameData.money += points;
-                            gameData.events.push({
-                                type: 'points',
-                                message: `Вы получили ${points} ₽ за содержание ${pet.name} (${getPetTypeName(pet.type)})`
-                            });
+                // Пассивный доход от питомцев
+                gameData.pets.forEach(pet => {
+                    if (pet.isAlive) {
+                        const animal = animalsShop.find(a => a.type === pet.type);
+                        if (animal) {
+                            gameData.coins += animal.income;
                         }
-                    });
-                }
+                    }
+                });
                 
                 updateUI();
                 saveGame();
@@ -1061,10 +1127,11 @@
                         </div>
                         <div>
                             <div class="shop-item-name">${animal.name}</div>
-                            <div class="shop-item-price">${animal.price} ₽</div>
+                            <div class="shop-item-price ${animal.currency}">${animal.price} ${animal.currency === 'coins' ? '<i class="fas fa-coins"></i>' : '<i class="fas fa-gem"></i>'}</div>
+                            <div style="font-size: 12px; color: var(--text-light);">Доход: ${animal.income} <i class="fas fa-coins"></i>/10сек</div>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="buyPet('${animal.type}', '${animal.age}')" ${gameData.money < animal.price ? 'disabled' : ''}>
+                    <button class="buy-btn ${animal.currency === 'coins' ? 'coins' : ''}" onclick="buyPet('${animal.type}', '${animal.age}', '${animal.currency}', ${animal.price})" ${gameData[animal.currency] < animal.price ? 'disabled' : ''}>
                         Купить
                     </button>
                 `;
@@ -1075,134 +1142,167 @@
             itemsContainer.innerHTML = '';
             
             itemsShop.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'shop-item';
-                itemElement.innerHTML = `
-                    <div class="shop-item-info">
-                        <div class="shop-item-icon">
-                            <i class="fas fa-${item.icon}"></i>
+                // Проверяем, есть ли у игрока питомцы, для которых нужен этот корм
+                let hasPetForFood = false;
+                const petTypes = ['dog', 'cat', 'hamster', 'parrot', 'fish', 'rabbit', 'turtle', 'ferret'];
+                
+                for (const type of petTypes) {
+                    if (item.id.includes(type) {
+                        hasPetForFood = gameData.pets.some(pet => pet.type === type && pet.isAlive);
+                        if (hasPetForFood) break;
+                    }
+                }
+                
+                // Для игрушек и аптечек всегда показываем
+                if (item.id === 'toy' || item.id === 'medicine') {
+                    hasPetForFood = true;
+                }
+                
+                if (hasPetForFood) {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'shop-item';
+                    itemElement.innerHTML = `
+                        <div class="shop-item-info">
+                            <div class="shop-item-icon">
+                                <i class="fas fa-${item.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="shop-item-name">${item.name}</div>
+                                <div class="shop-item-price ${item.currency}">${item.price} ${item.currency === 'coins' ? '<i class="fas fa-coins"></i>' : '<i class="fas fa-gem"></i>'}</div>
+                            </div>
                         </div>
-                        <div>
-                            <div class="shop-item-name">${item.name}</div>
-                            <div class="shop-item-price">${item.price} ₽</div>
-                        </div>
-                    </div>
-                    <button class="buy-btn" onclick="buyItem('${item.id}')" ${gameData.money < item.price ? 'disabled' : ''}>
-                        Купить
-                    </button>
-                `;
-                itemsContainer.appendChild(itemElement);
+                        <button class="buy-btn ${item.currency === 'coins' ? 'coins' : ''}" onclick="buyItem('${item.id}', '${item.currency}', ${item.price})" ${gameData[item.currency] < item.price ? 'disabled' : ''}>
+                            Купить
+                        </button>
+                    `;
+                    itemsContainer.appendChild(itemElement);
+                }
             });
         }
         
         // Обновление интерфейса
         function updateUI() {
-            // Обновление денег
-            document.getElementById('money').textContent = gameData.money;
+            // Обновление валют
+            document.getElementById('coins').textContent = gameData.coins;
+            document.getElementById('shards').textContent = gameData.shards;
             
             // Обновление списка питомцев
             const petsList = document.getElementById('pets-list');
             petsList.innerHTML = '';
             
-            gameData.pets.forEach((pet, index) => {
-                const petElement = document.createElement('div');
-                petElement.className = 'pet-card';
-                
-                if (!pet.isAlive) {
-                    petElement.innerHTML = `
-                        <div class="pet-header">
-                            <div class="pet-avatar pet-icon ${pet.type}">
-                                <i class="fas fa-${getPetIcon(pet.type)}"></i>
-                            </div>
-                            <div>
-                                <div class="pet-name">${pet.name}</div>
-                                <div class="pet-meta">
-                                    <span><i class="fas fa-paw"></i> ${getPetTypeName(pet.type)}</span>
-                                    <span><i class="fas fa-clock"></i> ${getAgeName(pet.age)}</span>
+            if (gameData.pets.length === 0) {
+                petsList.innerHTML = `
+                    <div class="no-pets-message">
+                        <i class="fas fa-paw"></i>
+                        <p>У вас пока нет питомцев</p>
+                        <p>Посетите магазин, чтобы приобрести своего первого питомца!</p>
+                    </div>
+                `;
+            } else {
+                gameData.pets.forEach((pet, index) => {
+                    const petElement = document.createElement('div');
+                    petElement.className = 'pet-card';
+                    
+                    if (!pet.isAlive) {
+                        petElement.innerHTML = `
+                            <div class="pet-header">
+                                <div class="pet-avatar pet-icon ${pet.type}">
+                                    <i class="fas fa-${getPetIcon(pet.type)}"></i>
+                                </div>
+                                <div>
+                                    <div class="pet-name">${pet.name}</div>
+                                    <div class="pet-meta">
+                                        <span><i class="fas fa-paw"></i> ${getPetTypeName(pet.type)}</span>
+                                        <span><i class="fas fa-clock"></i> ${getAgeName(pet.age)}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style="text-align: center; padding: 20px; color: var(--danger);">
-                            <i class="fas fa-skull" style="font-size: 24px;"></i>
-                            <p>Питомец умер</p>
-                        </div>
-                    `;
-                } else {
-                    petElement.innerHTML = `
-                        <div class="pet-header">
-                            <div class="pet-avatar pet-icon ${pet.type}">
-                                <i class="fas fa-${getPetIcon(pet.type)}"></i>
+                            <div style="text-align: center; padding: 20px; color: var(--danger);">
+                                <i class="fas fa-skull" style="font-size: 24px;"></i>
+                                <p>Питомец умер</p>
                             </div>
-                            <div>
-                                <div class="pet-name">${pet.name}</div>
-                                <div class="pet-meta">
-                                    <span><i class="fas fa-paw"></i> ${getPetTypeName(pet.type)}</span>
-                                    <span><i class="fas fa-${pet.gender === 'male' ? 'mars' : 'venus'}"></i> ${pet.gender === 'male' ? 'самец' : 'самка'}</span>
-                                    <span><i class="fas fa-clock"></i> ${getAgeName(pet.age)}</span>
+                        `;
+                    } else {
+                        const animal = animalsShop.find(a => a.type === pet.type);
+                        const income = animal ? animal.income : 0;
+                        
+                        petElement.innerHTML = `
+                            <div class="pet-header">
+                                <div class="pet-avatar pet-icon ${pet.type}">
+                                    <i class="fas fa-${getPetIcon(pet.type)}"></i>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="stats">
-                            <div class="stat">
-                                <div class="stat-label">
-                                    <span>Голод</span>
-                                    <span>${pet.hunger}%</span>
-                                </div>
-                                <div class="stat-bar">
-                                    <div class="stat-fill hunger-fill" style="width: ${pet.hunger}%"></div>
+                                <div>
+                                    <div class="pet-name">${pet.name}</div>
+                                    <div class="pet-meta">
+                                        <span><i class="fas fa-paw"></i> ${getPetTypeName(pet.type)}</span>
+                                        <span><i class="fas fa-${pet.gender === 'male' ? 'mars' : 'venus'}"></i> ${pet.gender === 'male' ? 'самец' : 'самка'}</span>
+                                        <span><i class="fas fa-clock"></i> ${getAgeName(pet.age)}</span>
+                                        <span><i class="fas fa-coins"></i> ${income}/10сек</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="stat">
-                                <div class="stat-label">
-                                    <span>Счастье</span>
-                                    <span>${pet.happiness}%</span>
+                            <div class="stats">
+                                <div class="stat">
+                                    <div class="stat-label">
+                                        <span>Голод</span>
+                                        <span>${pet.hunger}%</span>
+                                    </div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill hunger-fill" style="width: ${pet.hunger}%"></div>
+                                    </div>
                                 </div>
-                                <div class="stat-bar">
-                                    <div class="stat-fill happiness-fill" style="width: ${pet.happiness}%"></div>
+                                <div class="stat">
+                                    <div class="stat-label">
+                                        <span>Счастье</span>
+                                        <span>${pet.happiness}%</span>
+                                    </div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill happiness-fill" style="width: ${pet.happiness}%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-label">
+                                        <span>Здоровье</span>
+                                        <span>${pet.health}%</span>
+                                    </div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill health-fill" style="width: ${pet.health}%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-label">
+                                        <span>Энергия</span>
+                                        <span>${pet.energy}%</span>
+                                    </div>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill energy-fill" style="width: ${pet.energy}%"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="stat">
-                                <div class="stat-label">
-                                    <span>Здоровье</span>
-                                    <span>${pet.health}%</span>
-                                </div>
-                                <div class="stat-bar">
-                                    <div class="stat-fill health-fill" style="width: ${pet.health}%"></div>
-                                </div>
+                            <div class="actions">
+                                <button class="action-btn ${hasFoodForPet(pet.type) ? 'primary' : ''}" onclick="feedPet(${index})" ${!hasFoodForPet(pet.type) ? 'disabled' : ''}>
+                                    <i class="fas fa-utensils"></i>
+                                    <span>Кормить</span>
+                                </button>
+                                <button class="action-btn success" onclick="playWithPet(${index})" ${gameData.inventory.toy <= 0 || pet.energy <= 20 ? 'disabled' : ''}>
+                                    <i class="fas fa-gamepad"></i>
+                                    <span>Играть</span>
+                                </button>
+                                <button class="action-btn warning" onclick="healPet(${index})" ${gameData.inventory.medicine <= 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-heartbeat"></i>
+                                    <span>Лечить</span>
+                                </button>
+                                <button class="action-btn danger" onclick="sleepPet(${index})">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Спать</span>
+                                </button>
                             </div>
-                            <div class="stat">
-                                <div class="stat-label">
-                                    <span>Энергия</span>
-                                    <span>${pet.energy}%</span>
-                                </div>
-                                <div class="stat-bar">
-                                    <div class="stat-fill energy-fill" style="width: ${pet.energy}%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="actions">
-                            <button class="action-btn ${hasFoodForPet(pet.type) ? 'primary' : ''}" onclick="feedPet(${index})" ${!hasFoodForPet(pet.type) ? 'disabled' : ''}>
-                                <i class="fas fa-utensils"></i>
-                                <span>Кормить</span>
-                            </button>
-                            <button class="action-btn success" onclick="playWithPet(${index})" ${gameData.inventory.toy <= 0 || pet.energy <= 20 ? 'disabled' : ''}>
-                                <i class="fas fa-gamepad"></i>
-                                <span>Играть</span>
-                            </button>
-                            <button class="action-btn warning" onclick="healPet(${index})" ${gameData.inventory.medicine <= 0 ? 'disabled' : ''}>
-                                <i class="fas fa-heartbeat"></i>
-                                <span>Лечить</span>
-                            </button>
-                            <button class="action-btn danger" onclick="sleepPet(${index})">
-                                <i class="fas fa-moon"></i>
-                                <span>Спать</span>
-                            </button>
-                        </div>
-                    `;
-                }
-                
-                petsList.appendChild(petElement);
-            });
+                        `;
+                    }
+                    
+                    petsList.appendChild(petElement);
+                });
+            }
             
             // Обновление событий
             const eventsContainer = document.getElementById('events-container');
@@ -1214,7 +1314,7 @@
                 
                 if (event.type === 'death') {
                     eventElement.classList.add('danger');
-                } else if (event.type === 'points' || event.type === 'birth') {
+                } else if (event.type === 'income' || event.type === 'birth') {
                     eventElement.classList.add('success');
                 } else if (event.type === 'bite' || event.type === 'fine') {
                     eventElement.classList.add('warning');
@@ -1239,6 +1339,9 @@
                 
                 if (i < gameData.pets.length) {
                     const pet = gameData.pets[i];
+                    const animal = animalsShop.find(a => a.type === pet.type);
+                    const income = animal ? animal.income : 0;
+                    
                     spot.innerHTML = `
                         <div class="pet-spot-icon pet-icon ${pet.type}">
                             <i class="fas fa-${getPetIcon(pet.type)}"></i>
@@ -1247,7 +1350,7 @@
                             <div>${pet.name}</div>
                             <div class="pet-meta">
                                 <span><i class="fas fa-paw"></i> ${getPetTypeName(pet.type)}</span>
-                                <span><i class="fas fa-${pet.gender === 'male' ? 'mars' : 'venus'}"></i></span>
+                                <span><i class="fas fa-coins"></i> ${income}/10сек</span>
                             </div>
                         </div>
                     `;
@@ -1268,12 +1371,13 @@
         }
         
         // Покупка питомца
-        function buyPet(type, age) {
-            const animal = animalsShop.find(a => a.type === type);
-            
-            if (gameData.money >= animal.price) {
+        function buyPet(type, age, currency, price) {
+            if (gameData[currency] >= price) {
                 if (gameData.pets.length < gameData.house.petSpots) {
-                    gameData.money -= animal.price;
+                    gameData[currency] -= price;
+                    
+                    const animal = animalsShop.find(a => a.type === type);
+                    const animalName = animal ? animal.name : type;
                     
                     const newPet = {
                         id: Date.now(),
@@ -1291,7 +1395,7 @@
                     gameData.pets.push(newPet);
                     gameData.events.push({
                         type: 'new_pet',
-                        message: `Вы купили ${animal.name} по имени ${newPet.name}!`
+                        message: `Вы купили ${animalName} по имени ${newPet.name}!`
                     });
                     
                     updateUI();
@@ -1300,33 +1404,31 @@
                     showAlert('В вашем доме нет места для нового питомца! Улучшите дом.');
                 }
             } else {
-                showAlert('Недостаточно денег!');
+                showAlert(`Недостаточно ${currency === 'coins' ? 'монет' : 'шардов'}!`);
             }
         }
         
         // Покупка предметов
-        function buyItem(item) {
-            const shopItem = itemsShop.find(i => i.id === item);
-            
-            if (gameData.money >= shopItem.price) {
-                gameData.money -= shopItem.price;
+        function buyItem(item, currency, price) {
+            if (gameData[currency] >= price) {
+                gameData[currency] -= price;
                 gameData.inventory[item]++;
                 gameData.events.push({
                     type: 'purchase',
-                    message: `Вы купили ${shopItem.name}`
+                    message: `Вы купили ${getItemName(item)}`
                 });
                 
                 updateUI();
                 saveGame();
             } else {
-                showAlert('Недостаточно денег!');
+                showAlert(`Недостаточно ${currency === 'coins' ? 'монет' : 'шардов'}!`);
             }
         }
         
         // Кормление питомца
         function feedPet(petIndex) {
             const pet = gameData.pets[petIndex];
-            const foodType = pet.type === 'dog' ? 'dog_food' : pet.type === 'cat' ? 'cat_food' : 'dog_food';
+            const foodType = `${pet.type}_food`;
             
             if (gameData.inventory[foodType] > 0) {
                 gameData.inventory[foodType]--;
@@ -1404,8 +1506,8 @@
         function upgradeHouse() {
             const upgradeCost = gameData.house.level * 1000;
             
-            if (gameData.money >= upgradeCost) {
-                gameData.money -= upgradeCost;
+            if (gameData.coins >= upgradeCost) {
+                gameData.coins -= upgradeCost;
                 gameData.house.level++;
                 gameData.house.petSpots++;
                 
@@ -1425,7 +1527,7 @@
                 updateUI();
                 saveGame();
             } else {
-                showAlert(`Недостаточно денег! Нужно ${upgradeCost} ₽`);
+                showAlert(`Недостаточно монет! Нужно ${upgradeCost} <i class="fas fa-coins"></i>`);
             }
         }
         
@@ -1444,8 +1546,8 @@
                 },
                 {
                     chance: 0.05,
-                    message: `${pet.name} (${getPetTypeName(pet.type)}) укусил(а) прохожего! Вы должны заплатить штраф 200 ₽.`,
-                    effect: () => { gameData.money = Math.max(0, gameData.money - 200); }
+                    message: `${pet.name} (${getPetTypeName(pet.type)}) укусил(а) прохожего! Вы должны заплатить штраф 200 монет.`,
+                    effect: () => { gameData.coins = Math.max(0, gameData.coins - 200); }
                 },
                 {
                     chance: 0.03,
@@ -1501,7 +1603,7 @@
         
         function clickerGame() {
             const earnings = Math.floor(Math.random() * 10) + 1;
-            gameData.money += earnings;
+            gameData.coins += earnings;
             clickerCounter += earnings;
             document.getElementById('clicker-counter').textContent = clickerCounter;
             updateUI();
@@ -1514,8 +1616,8 @@
             const resultElement = document.getElementById('color-result');
             
             if (color === correctColor) {
-                gameData.money += 100;
-                resultElement.textContent = 'Правильно! Вы выиграли 100 ₽';
+                gameData.coins += 100;
+                resultElement.textContent = 'Правильно! Вы выиграли 100 монет';
                 resultElement.className = 'game-result success-text';
             } else {
                 resultElement.textContent = `Неправильно! Правильный цвет был ${correctColor === 'red' ? 'красный' : correctColor === 'green' ? 'зеленый' : 'синий'}`;
@@ -1563,7 +1665,7 @@
         // Сброс прогресса
         function resetProgress() {
             if (confirm('Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.')) {
-                localStorage.removeItem('petSimulatorData');
+                localStorage.removeItem('petopiaData');
                 location.reload();
             }
         }
@@ -1575,7 +1677,10 @@
                 cat: 'cat',
                 hamster: 'hamster',
                 parrot: 'kiwi-bird',
-                fish: 'fish'
+                fish: 'fish',
+                rabbit: 'rabbit',
+                turtle: 'turtle',
+                ferret: 'ferret'
             };
             return icons[type];
         }
@@ -1586,7 +1691,10 @@
                 cat: 'Кошка',
                 hamster: 'Хомяк',
                 parrot: 'Попугай',
-                fish: 'Рыбка'
+                fish: 'Рыбка',
+                rabbit: 'Кролик',
+                turtle: 'Черепаха',
+                ferret: 'Хорек'
             };
             return names[type];
         }
@@ -1604,13 +1712,19 @@
             const hamsterNames = ['Хома', 'Пушок', 'Чип', 'Дейл', 'Нюша'];
             const parrotNames = ['Кеша', 'Гоша', 'Рио', 'Лора', 'Арчи'];
             const fishNames = ['Немо', 'Дори', 'Бульк', 'Пузырь', 'Золотик'];
+            const rabbitNames = ['Пушистик', 'Ушастик', 'Банни', 'Прыгун', 'Морковкин'];
+            const turtleNames = ['Лео', 'Донни', 'Раф', 'Мики', 'Шелдон'];
+            const ferretNames = ['Фредди', 'Лучик', 'Пушок', 'Зигги', 'Ферри'];
             
             const names = {
                 dog: dogNames,
                 cat: catNames,
                 hamster: hamsterNames,
                 parrot: parrotNames,
-                fish: fishNames
+                fish: fishNames,
+                rabbit: rabbitNames,
+                turtle: turtleNames,
+                ferret: ferretNames
             };
             
             return names[type][Math.floor(Math.random() * names[type].length)];
@@ -1627,9 +1741,24 @@
         }
         
         function hasFoodForPet(type) {
-            return (type === 'dog' && gameData.inventory.dog_food > 0) || 
-                   (type === 'cat' && gameData.inventory.cat_food > 0) ||
-                   (type !== 'dog' && type !== 'cat' && gameData.inventory.dog_food > 0);
+            const foodType = `${type}_food`;
+            return gameData.inventory[foodType] > 0;
+        }
+        
+        function getItemName(item) {
+            const names = {
+                dog_food: 'корм для собак',
+                cat_food: 'корм для кошек',
+                hamster_food: 'корм для хомяков',
+                parrot_food: 'корм для попугаев',
+                fish_food: 'корм для рыбок',
+                rabbit_food: 'корм для кроликов',
+                turtle_food: 'корм для черепах',
+                ferret_food: 'корм для хорьков',
+                toy: 'игрушку',
+                medicine: 'аптечку'
+            };
+            return names[item];
         }
         
         function getMaxAge(type) {
@@ -1638,20 +1767,12 @@
                 cat: 18,
                 hamster: 4,
                 parrot: 25,
-                fish: 5
+                fish: 5,
+                rabbit: 8,
+                turtle: 50,
+                ferret: 7
             };
             return ages[type];
-        }
-        
-        function getPetPoints(type) {
-            const points = {
-                dog: 10,
-                cat: 8,
-                hamster: 5,
-                parrot: 7,
-                fish: 3
-            };
-            return points[type];
         }
         
         function openTab(tabName) {
@@ -1675,7 +1796,7 @@
         function showAlert(message) {
             const alertElement = document.createElement('div');
             alertElement.className = 'event-message warning';
-            alertElement.textContent = message;
+            alertElement.innerHTML = message;
             
             const eventsContainer = document.getElementById('events-container');
             eventsContainer.insertBefore(alertElement, eventsContainer.firstChild);
